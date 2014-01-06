@@ -1,28 +1,32 @@
+setlocal enableDelayedExpansion
+set hostpath=%1
+if "%hostpath%"=="" set hostpath=localhost
 if exist post_test_results.txt (del post_test_results.txt)
-type test_header.txt > post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/account.php?user[some]=stuff >> post_test_results.txt
+echo {^"postResults^":[ >  post_test_results.txt
+curl -X POST -d "user[some]=stuff" -g http://%hostpath%/wlux/data/account.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/gratuity.php?gratuity[some]=stuff >> post_test_results.txt
+REM curl -X POST --header "Content-Length: 0" -g http://%hostpath%/wlux/data/gratuity.php?gratuity[some]=stuff >> post_test_results.txt
+curl -X POST -d "gratuity[studyId]=1234&gratuity[sessionName]=Freshman class test&gratuity[email]=test@example.com&gratuity[comments]=automated test" -g http://%hostpath%/wlux/data/gratuity.php  >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/log.php?load[some]=stuff >> post_test_results.txt
+curl -X POST -d "load[some]=stuff" -g http://%hostpath%/wlux/data/log.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/log.php?transition[some]=stuff >> post_test_results.txt
+curl -X POST -d "transition[some]=stuff" -g http://%hostpath%/wlux/data/log.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/session.php?start[some]=stuff >> post_test_results.txt
+curl -X POST -d "start[some]=stuff" -g http://%hostpath%/wlux/data/session.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/session.php?startNextTask[some]=stuff >> post_test_results.txt
+curl -X POST -d "startNextTask[some]=stuff" -g http://%hostpath%/wlux/data/session.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/session.php?finishCurrentTask[some]=stuff >> post_test_results.txt
+curl -X POST -d "finishCurrentTask[some]=stuff" -g http://%hostpath%/wlux/data/session.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/signin.php?user=stuff >> post_test_results.txt
+curl -X POST -d "user=stuff" -g http://%hostpath%/wlux/data/signin.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/signout.php?user=stuff >> post_test_results.txt
+curl -X POST -d "user=stuff" -g http://%hostpath%/wlux/data/signout.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/study.php?config[some]=stuff >> post_test_results.txt
+curl -X POST -d "config[some]=stuff" -g http://%hostpath%/wlux/data/study.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/study.php?task[some]=stuff >> post_test_results.txt
+curl -X POST -d "task[some]=stuff" -g http://%hostpath%/wlux/data/study.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/study.php?schedule[some]=stuff >> post_test_results.txt
+curl -X POST -d "schedule[some]=stuff" -g http://%hostpath%/wlux/data/study.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST --header "Content-Length: 0" -g http://localhost/wlux/data/study.php?variable[some]=stuff >> post_test_results.txt
+curl -X POST -d "variable[some]=stuff" -g http://%hostpath%/wlux/data/study.php >> post_test_results.txt
 echo ]} >> post_test_results.txt

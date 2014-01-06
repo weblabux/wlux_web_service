@@ -6,10 +6,12 @@
 	$DB_USER = 'db_test';
 	$DB_PASS = 'WeCantDecide2';
 	$DB_DATABASE_NAME = 'wlux_services';
+/*	
 	$DB_TABLE_OPEN_LOG = 'log_open';
 	$DB_TABLE_TRANSITION_LOG = 'log_transition';
 	$DB_TABLE_SESSION_CONFIG = 'session_config';
 	$DB_TABLE_STUDY_CONFIG = 'study_config';
 	$DB_TABLE_SESSION_LOG = 'session_log';
+*/
 	$DB_TABLE_GRATUITY_LOG = 'gratuity_log';
 ?>

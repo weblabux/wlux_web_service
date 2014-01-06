@@ -33,18 +33,10 @@ function _log_post($link, $postData) {
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {
-	// unrecognized command
-		$errData['status'] = 501;
-		$errData['message'] = 'Command not recognized.';
-		if ($debugState) {
-			// return debug info
-			$errData['module'] = __FILE__;
-			$errData['postData'] = $postData;
-			$errData['getData'] = $_GET;
-		}
-		// $errData['globals'] = $GLOBALS;
-		$response['error'] = $errData;
+		$thisFile = __FILE__;
+		require 'response_501.php';
 	}
+
 	return $response;
 }
 ?>
