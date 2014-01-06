@@ -1,6 +1,7 @@
 <?php 
 require 'config_files.php';
 require 'int_debug.php';
+require 'int_get_message.php';
 require 'study_get.php';
 require 'study_post.php';
 require 'study_put.php';
@@ -64,8 +65,7 @@ if (!$link) {
 		$response = _study_delete($link, $postData);
 	} else {
 		// method not supported
-		$errData['status'] = 405;
-		$errData['message'] = 'HTTP method not allowed.';
+		$errData = get_error_message ($link, 405);
 		$response['error'] = $errData;
 		if ($debugState) {
 			$response['debug']['module'] = __FILE__;

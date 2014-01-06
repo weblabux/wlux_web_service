@@ -13,5 +13,6 @@
 	$DB_TABLE_STUDY_CONFIG = 'study_config';
 	$DB_TABLE_SESSION_LOG = 'session_log';
 */
+    $DB_ERROR_MESSAGES = 'error_messages';
 	$DB_TABLE_GRATUITY_LOG = 'gratuity_log';
 ?>

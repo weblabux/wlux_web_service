@@ -42,8 +42,7 @@ require 'db_utils.php';
 		
 		// if there was an error, return it, otherwise add the record
 		if (!empty($localErr)) {
-			$errData['status'] = 400;
-			$errData['message'] = 'Bad request';
+			$errData = get_error_message ($link, 400);
 			$errData['requestError'] = $localErr;
 			$response['error'] = $errData;
 		} else {
@@ -53,8 +52,7 @@ require 'db_utils.php';
 			$qResult = mysqli_query($link, $queryString);
 			if (!$qResult) {
 				// SQL ERROR
-				$errData['status'] = 500;
-				$errData['message'] = 'Error writing gratuity entry.';
+				$errData = get_error_message ($link, 500, 1);
 			} else {
 				// success
 				// finish start response buffer
@@ -70,8 +68,7 @@ require 'db_utils.php';
 			}
 		}
 	} else {
-		$errData['status'] = 400;
-		$errData['message'] = 'Bad request';
+		$errData = get_error_message ($link, 400);
 		$errData['info'] = 'No data in request.';
 		$response['error'] = $errData;
 	}

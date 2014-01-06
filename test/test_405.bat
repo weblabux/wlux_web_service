@@ -1,3 +1,4 @@
+@echo off
 setlocal enableDelayedExpansion
 set hostpath=%1
 if "%hostpath%"=="" set hostpath=localhost

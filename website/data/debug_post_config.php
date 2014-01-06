@@ -10,8 +10,7 @@ require 'db_utils.php';
 		$response['debug']['cmdData'] = $logData;
 	}
     // not implemented
-	$errData['status'] = 501;
-	$errData['message'] = 'Command not implemented.';
+	$errData = get_error_message ($link, 501);
 	$response['error'] = $errData;
 	
 	return $response;

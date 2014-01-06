@@ -1,7 +1,6 @@
 <?php
 // unrecognized command
-$errData['status'] = 501;
-$errData['message'] = 'Command not recognized.';
+$errData = get_error_message ($link, 501, 1);
 $response['error'] = $errData;
 if ($debugState) {
 	// return debug info

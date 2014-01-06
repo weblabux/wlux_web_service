@@ -35,8 +35,7 @@ require 'db_utils.php';
 		
 		// if there was an error, return it, otherwise add the record
 		if (!empty($localErr)) {
-			$errData['status'] = 400;
-			$errData['message'] = 'Bad request';
+			$errData = get_error_message ($link, 400);
 			$errData['requestError'] = $localErr;
 			$response['error'] = $errData;
 		} else {
@@ -59,8 +58,8 @@ require 'db_utils.php';
 			}
 			if ($idx == 0) {
 				$localErr = '';
-				$localErr['status'] = 404;
-				$localErr['message'] = 'No gratuity records found';
+				$localErr = get_error_message ($link, 404);
+				$localErr['info'] = 'No gratuity records found for the specified study and session';
 				$response['error'] = $localErr;
 			}
 			if ($debugState) {
@@ -73,8 +72,7 @@ require 'db_utils.php';
 			}
 		}
 	} else {
-		$errData['status'] = 400;
-		$errData['message'] = 'Bad request';
+		$errData = get_error_message ($link, 400);
 		$errData['info'] = 'No data in request.';
 		$response['error'] = $errData;
 	}

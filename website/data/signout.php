@@ -1,6 +1,7 @@
 <?php 
 require 'config_files.php';
 require 'int_debug.php';
+require 'int_get_message.php';
 require 'signout_post.php';
 
 $response = '';
@@ -34,8 +35,7 @@ if (!$link) {
 		$response = _signout_post($link, $postData);
 	} else {
 		// method not supported
-		$errData['status'] = 405;
-		$errData['message'] = 'HTTP method not allowed.';
+		$errData = get_error_message ($link, 405);
 		$response['error'] = $errData;
 		if ($debugState) {
 			$response['debug']['module'] = __FILE__;
