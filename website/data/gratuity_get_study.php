@@ -8,6 +8,7 @@ require 'db_utils.php';
 	if ($debugState) {
 		$response['debug']['module'] = __FILE__;
 		$response['debug']['cmdData'] = $logData;
+		$response['debug']['auth'] = $authInfo;
 	}
 	// validate the user's access
 	if ($authInfo['access'] != $AUTH_ADMIN) {
