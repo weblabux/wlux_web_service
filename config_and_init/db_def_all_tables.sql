@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS error_messages (
 
 INSERT INTO error_messages (`status`, variation, `language`, message) VALUES
 (400, 0, 'en-US', 'Bad request'),
+(401, 0, 'en-US', 'Not authorized'),
 (404, 0, 'en-US', 'Record not found'),
 (405, 0, 'en-US', 'HTTP method not allowed'),
 (500, 0, 'en-US', 'Server error'),
