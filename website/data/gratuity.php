@@ -1,6 +1,7 @@
 <?php 
 require 'config_files.php';
 require 'int_debug.php';
+require 'int_auth.php';
 require 'int_get_message.php';
 require 'gratuity_get.php';
 require 'gratuity_post.php';
@@ -22,6 +23,8 @@ if (!$link) {
 } else {
 	$debugState = int_GetDebug($link, 'gratuity', '');
 	$postData = '';
+	$authInfo = authorize_user ($link);
+	$response['debug']['auth'] = $authInfo;
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		// get the request data
 		// if the data is not in the the post form, try the query string
@@ -31,7 +34,7 @@ if (!$link) {
 		if (empty($postData)) {
 			$postData = $_POST;
 		}
-		$response = _gratuity_get($link, $postData);
+		$response = _gratuity_get($link, $authInfo, $postData);
 	} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// get the request data
 		if (!empty($HTTP_RAW_POST_DATA)) {
@@ -44,7 +47,7 @@ if (!$link) {
 		if (empty($postData)) {
 			$postData = $_GET;
 		} 
-		$response = _gratuity_post($link, $postData);
+		$response = _gratuity_post($link, $authInfo, $postData);
 	} else {
 		// method not supported
 		$errData = get_error_message ($link, 405);

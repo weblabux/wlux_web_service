@@ -1,5 +1,5 @@
 <?php
-function _gratuity_post_gratuity ($link, $logData, $debugState) {
+function _gratuity_post_gratuity ($link, $authInfo, $logData, $debugState) {
 require 'config_files.php';
 require 'db_utils.php';
 	// initialize the response buffer
@@ -9,7 +9,10 @@ require 'db_utils.php';
 		$response['debug']['module'] = __FILE__;
 		$response['debug']['cmdData'] = $logData;
 	}
-    // validate the request buffer fields
+	// validate the user's access
+	//  ** No access restrictions for this method
+	//
+
 	if (!empty($logData)) {
 		$localErr = '';
 		$fieldName = 'studyId';

@@ -16,11 +16,13 @@ curl -g http://%hostpath%/wlux/data/session.php?bad[some]=stuff >> get_test_resu
 echo , >> get_test_results.txt
 curl -g http://%hostpath%/wlux/data/study.php?bad[some]=stuff >> get_test_results.txt
 echo , >> get_test_results.txt
+curl --header "Authorization: Basic ZGVmYXVsdFJlc2VhcmNoZXI6MVBhc3N3b3Jk" -g http://%hostpath%/wlux/data/gratuity.php?study[studyId]=12345^&study[sessionName]=AutomatedTest >> get_test_results.txt
+echo , >> get_test_results.txt
 curl -g http://%hostpath%/wlux/data/account.php?user[some]=stuff >> get_test_results.txt
 echo , >> get_test_results.txt
 curl -g http://%hostpath%/wlux/data/debug.php?config[some]=stuff >> get_test_results.txt
 echo , >> get_test_results.txt
-curl -g http://%hostpath%/wlux/data/gratuity.php?study[studyId]=12345^&study[sessionName]=AutomatedTest >> get_test_results.txt
+curl --header "Authorization: Basic ZGVmYXVsdEFkbWluOjFQYXNzd29yZA==" -g http://%hostpath%/wlux/data/gratuity.php?study[studyId]=12345^&study[sessionName]=AutomatedTest >> get_test_results.txt
 echo , >> get_test_results.txt
 curl -g http://%hostpath%/wlux/data/log.php?session[some]=stuff >> get_test_results.txt
 echo , >> get_test_results.txt

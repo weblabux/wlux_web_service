@@ -19,4 +19,14 @@ function format_object_for_SQL_insert ($tableName, $object) {
 	$queryString = 'INSERT INTO '.$tableName.' ('.$dbColList.') VALUES ('.$dbValList.')';
 	return $queryString;
 }
+
+function get_study_owner ($studyId) {
+	// TODO: check the study DB.
+	// return the defaultReseacher ID for now until the study interface is ready
+	if ($studyId == 1234) {
+		return 2;
+	} else {
+		return -1;
+	}
+}
 ?>

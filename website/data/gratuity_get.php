@@ -3,7 +3,7 @@
 /* require files for each command that supports this method */
 require 'gratuity_get_study.php';
 
-function _gratuity_get($link, $postData) {
+function _gratuity_get($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'gratuity', 'GET');
 	$actionTaken = false;
 	/*
@@ -22,7 +22,7 @@ function _gratuity_get($link, $postData) {
 	$action = 'study';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _gratuity_get_study ($link, $logData, $debugState);
+		$response = _gratuity_get_study ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {
