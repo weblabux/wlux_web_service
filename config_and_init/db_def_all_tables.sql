@@ -14,6 +14,10 @@ SET time_zone = "+08:00";
 -- Database: 'wlux_services'
 --
 
+CREATE DATABASE IF NOT EXISTS wlux_services 
+    DEFAULT CHARACTER SET utf8
+    DEFAULT COLLATE utf8_unicode_ci
+
 -- --------------------------------------------------------
 
 --
