@@ -30,6 +30,8 @@ curl -X POST -d "finishCurrentTask[some]=stuff" -g http://%hostpath%/wlux/data/s
 echo , >> post_test_results.txt
 curl -X POST -d "user=stuff" -g http://%hostpath%/wlux/data/signin.php >> post_test_results.txt
 echo , >> post_test_results.txt
+curl -X POST -d "signIn[username]=defaultResearcher&signIn[password]=1Password" -g http://%hostpath%/wlux/data/signin.php  >> post_test_results.txt
+echo , >> post_test_results.txt
 curl -X POST -d "user=stuff" -g http://%hostpath%/wlux/data/signout.php >> post_test_results.txt
 echo , >> post_test_results.txt
 curl -X POST -d "config[some]=stuff" -g http://%hostpath%/wlux/data/study.php >> post_test_results.txt
