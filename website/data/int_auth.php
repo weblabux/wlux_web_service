@@ -22,7 +22,7 @@ require 'config_files.php';
 			$password = $userPassSplit[1];
 		}
 		
-		$queryString = 'SELECT username, recordSeq AS accountId, ownerId, firstName, lastName, greetingName, orgName, email, accountType, wluxUrlRoot, clientUrlRoot, defaultTimeZone FROM '.$DB_TABLE_USER_ACCOUNTS.
+		$queryString = 'SELECT username, recordSeq AS accountId, ownerId, firstName, lastName, greetingName, orgName, email, accountType, wluxUrlRoot, clientUrlRoot, defaultTimeZone FROM '.DB_TABLE_USER_ACCOUNTS.
 			' WHERE username = "'.$username.'" AND acctPassword = "'.$password.'"';
 		$result = @mysqli_query ($link, $queryString);
 		$idx = 0;

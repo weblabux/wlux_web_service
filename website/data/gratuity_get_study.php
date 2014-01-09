@@ -34,13 +34,13 @@ require 'db_utils.php';
 				$studyId = $logData[$fieldName];
 			}
 			
-			$fieldName = 'sessionName';
+			$fieldName = 'periodName';
 			if (empty($logData[$fieldName])) {
 				$localErr['fields'][$fieldName] = "Missing";
 			} else {
-				// TODO: This should also make sure the sessionName is valid
+				// TODO: This should also make sure the periodName is valid
 				// if valid, assign to local variable
-				$sessionName = $logData[$fieldName];
+				$periodName = $logData[$fieldName];
 			}
 			
 			// if not an admin, limit the query to the records they own
@@ -61,8 +61,8 @@ require 'db_utils.php';
 				}
 			} else {
 				// read conifguration for this study and condition
-				$queryString = 'SELECT studyId, sessionName, email, comments FROM '.$DB_TABLE_GRATUITY_LOG.
-					' WHERE studyId = '.$studyId.' AND sessionName = "'.$sessionName.'"';
+				$queryString = 'SELECT studyId, periodName, email, comments FROM '.DB_TABLE_GRATUITY_LOG.
+					' WHERE studyId = '.$studyId.' AND periodName = "'.$periodName.'"';
 				$result = @mysqli_query ($link, $queryString);
 				$idx = 0;
 				if (mysqli_num_rows($result)  > 0) {
@@ -80,7 +80,7 @@ require 'db_utils.php';
 				if ($idx == 0) {
 					$localErr = '';
 					$localErr = get_error_message ($link, 404);
-					$localErr['info'] = 'No gratuity records found for the specified study and session';
+					$localErr['info'] = 'No gratuity records found for the specified study and study period';
 					$response['error'] = $localErr;
 				}
 				if ($debugState) {

@@ -25,11 +25,11 @@ require 'db_utils.php';
 			// TODO: This should also make sure the studyID is valid
 		}
 		
-		$fieldName = 'sessionName';
+		$fieldName = 'periodName';
 		if (empty($logData[$fieldName])) {
 			$localErr['fields'][$fieldName] = "Missing";
 		} else {
-			// TODO: This should also make sure the sessionName is valid
+			// TODO: This should also make sure the periodName is valid
 		}
 		
 		$fieldName = 'email';
@@ -51,7 +51,7 @@ require 'db_utils.php';
 		} else {
 			// create a new gratuity_log record 
 				
-			$queryString = format_object_for_SQL_insert ($DB_TABLE_GRATUITY_LOG, $logData);
+			$queryString = format_object_for_SQL_insert (DB_TABLE_GRATUITY_LOG, $logData);
 			$qResult = mysqli_query($link, $queryString);
 			if (!$qResult) {
 				// SQL ERROR

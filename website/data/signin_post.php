@@ -35,7 +35,7 @@ require 'config_files.php';
 	}
 	
 	if (!empty($username) && !empty($password)) {
-		$queryString = 'SELECT username, recordSeq AS accountId, ownerId, acctPassword AS password FROM '.$DB_TABLE_USER_ACCOUNTS.
+		$queryString = 'SELECT username, recordSeq AS accountId, ownerId, acctPassword AS password FROM '.DB_TABLE_USER_ACCOUNTS.
 			' WHERE username = "'.$username.'" AND acctPassword = "'.$password.'"';
 		$result = @mysqli_query ($link, $queryString);
 		if (mysqli_num_rows($result)  > 0) {

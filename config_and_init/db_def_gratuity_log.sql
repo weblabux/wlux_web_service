@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS gratuity_log;
 CREATE TABLE IF NOT EXISTS gratuity_log (
   recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   studyId bigint(20) unsigned NOT NULL DEFAULT '0',
-  sessionName varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  periodName varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   email varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   comments varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   dateCreated datetime NOT NULL,

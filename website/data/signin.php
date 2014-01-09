@@ -6,7 +6,7 @@ require 'signin_post.php';
 
 $response = '';
 
-$link = @mysqli_connect($DB_SERVER, $DB_USER, $DB_PASS, $DB_DATABASE_NAME);
+$link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
 if (!$link) {
 	require 'response_500_db_open_error.php';
 } else {
