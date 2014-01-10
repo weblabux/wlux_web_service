@@ -4,8 +4,6 @@ set hostpath=%1
 if "%hostpath%"=="" set hostpath=localhost
 if exist full_test_results.txt (del full_test_results.txt)
 if exist full_test_output.txt (del full_test_output.txt)
-date /t > full_test_output.txt
-time /t >> full_test_output.txt
 echo [ > full_test_results.txt
 call test_405.bat %hostpath%
 type test_405_results.txt >>full_test_results.txt

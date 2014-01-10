@@ -63,7 +63,6 @@ require 'config_files.php';
 				$response['debug']['postData'] = $postData;
 				$response['debug']['query']['queryString'] = $queryString;
 				$response['debug']['query']['response'] = $result;
-				$response['debug']['query']['record'] = $userInfo;				
 			}
 		}
 		$actionTaken = true;
