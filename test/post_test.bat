@@ -16,7 +16,7 @@ curl -X POST -d "bad[some]=stuff" -g http://%hostpath%/wlux/data/study.php >> po
 echo , >> post_test_results.txt
 curl -X POST -d "user[some]=stuff" -g http://%hostpath%/wlux/data/account.php >> post_test_results.txt
 echo , >> post_test_results.txt
-curl -X POST -d "gratuity[studyId]=1234&gratuity[sessionName]=Freshman class test&gratuity[email]=test@example.com&gratuity[comments]=automated test" -g http://%hostpath%/wlux/data/gratuity.php  >> post_test_results.txt
+curl -X POST -d "gratuity[studyId]=1234&gratuity[periodName]=Freshman class test&gratuity[email]=test@example.com&gratuity[comments]=automated test" -g http://%hostpath%/wlux/data/gratuity.php  >> post_test_results.txt
 echo , >> post_test_results.txt
 curl -X POST -d "load[some]=stuff" -g http://%hostpath%/wlux/data/log.php >> post_test_results.txt
 echo , >> post_test_results.txt

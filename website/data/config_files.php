@@ -32,18 +32,21 @@
 	define('DB_USER', 'db_test', false);
 	define('DB_PASS', 'WeCantDecide2', false);
 	define('DB_DATABASE_NAME', 'wlux_services', false);
+
+	define('DB_TABLE_DEBUG', 'debug', false);
+
+	define('DB_TABLE_USER_ACCOUNTS', 'user_accounts', false);
 	
+	define('DB_TABLE_STUDY_GENERAL', 'study_general',false);
 	define('DB_TABLE_STUDY_VARIATIONS', 'study_variations',false);
 	define('DB_TABLE_STUDY_TASKS', 'study_tasks',false);
-	define('DB_TABLE_STUDY_SCHEDULE', 'study_schedule', false);
-	define('DB_TABLE_STUDY_GENERAL', 'study_general',false);
-	define('DB_TABLE_SESSION_LOG',  'session_log',false);
-	define('DB_TABLE_SESSION_CONFIG', 'session_config', false);
+	define('DB_TABLE_STUDY_PERIODS', 'study_periods', false);
+
+	define('DB_TABLE_SESSION_LOG',  'log_session',false);
 	define('DB_TABLE_TRANSITION_LOG', 'log_transition', false);
-	define('DB_TABLE_DEBUG', 'debug', false);
-	define('DB_TABLE_USER_ACCOUNTS', 'user_accounts', false);
-	define('DB_TABLE_GRATUITY_LOG', 'gratuity_log', false);
-	
+	define('DB_TABLE_GRATUITY_LOG', 'log_gratuity', false);
+
+	define('DB_TABLE_SESSION_CONFIG', 'session_config', false);	
 }
 /*	
 	$DB_TABLE_OPEN_LOG = 'log_open';

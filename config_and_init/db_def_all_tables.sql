@@ -26,20 +26,20 @@ CREATE DATABASE IF NOT EXISTS wlux_services
 
 DROP TABLE IF EXISTS error_messages;
 CREATE TABLE IF NOT EXISTS error_messages (
-  recordSeq int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `status` int(10) unsigned NOT NULL,
-  variation int(10) unsigned NOT NULL DEFAULT '0',
-  `language` char(8) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en-US',
-  message varchar(2048) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (recordSeq),
-  KEY `status` (`status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+  errorMessageId int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique message ID. Used only to identify the record in the table',
+  errorStatus int(10) unsigned NOT NULL  COMMENT 'HTTP error response status value',
+  messageVariation int(10) unsigned NOT NULL  COMMENT 'Variation of message. Supports multiple error messages for a single errorStatus value to provide more descriptive messages in specific situations.',
+  messageLanguage char(8)  COLLATE utf8_unicode_ci  NOT NULL  COMMENT 'Language code of the message text language.',
+  messageText varchar(2048)  COLLATE utf8_unicode_ci  NOT NULL  COMMENT 'Message text to return to the caller',
+  PRIMARY KEY (errorMessageId),
+  KEY errorStatus (errorStatus)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Used to store error message text for error response buffers';
 
 --
--- Dumping data for table 'error_messages'
+-- Data for table 'error_messages'
 --
 
-INSERT INTO error_messages (`status`, variation, `language`, message) VALUES
+INSERT INTO error_messages (`errorStatus`, messageVariation, `messageLanguage`, messageText) VALUES
 (400, 0, 'en-US', 'Bad request'),
 (401, 0, 'en-US', 'Not authorized'),
 (404, 0, 'en-US', 'Record not found'),
@@ -57,33 +57,33 @@ INSERT INTO error_messages (`status`, variation, `language`, message) VALUES
 
 DROP TABLE IF EXISTS debug;
 CREATE TABLE IF NOT EXISTS debug (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  moduleName varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  methodName varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  returnDbgData tinyint(1) NOT NULL DEFAULT '0',
-  returnSqlData tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  debugId bigint(20) unsigned NOT NULL  AUTO_INCREMENT COMMENT 'Unique record ID.',
+  moduleName varchar(64)  COLLATE utf8_unicode_ci  NOT NULL   COMMENT 'Module to which this setting applies.',
+  methodName varchar(64)  COLLATE utf8_unicode_ci  NOT NULL   COMMENT 'Method to which this setting applies.',
+  returnDbgData tinyint(1)  NOT NULL  DEFAULT '0' COMMENT 'When TRUE, the specified module and method should return a debug data structure in the repsonse.',
+  returnSqlData tinyint(1)  NOT NULL  DEFAULT '0' COMMENT 'When TRUE, the specified module and method should return an SQL ddata structure in the repsonse.',
+  PRIMARY KEY (debugId),
+  UNIQUE KEY debugId (debugId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Used to store the debug message configuration of the service.';
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table 'gratuity_log'
+-- Table structure for table 'log_gratuity'
 --
 
-DROP TABLE IF EXISTS gratuity_log;
-CREATE TABLE IF NOT EXISTS gratuity_log (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  studyId bigint(20) unsigned NOT NULL DEFAULT '0',
-  periodName varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  email varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  comments varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  dateCreated datetime NOT NULL,
-  dateModified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+DROP TABLE IF EXISTS log_gratuity;
+CREATE TABLE IF NOT EXISTS log_gratuity (
+  gratuityLogId bigint(20) unsigned NOT NULL  AUTO_INCREMENT COMMENT 'Unique record ID.',
+  studyId bigint(20) unsigned NOT NULL   COMMENT 'ID of study to which this gratuity entry belongs.',
+  periodName varchar(64)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'Name of study period in the study identified by studyId to which this entry belongs.',
+  email varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'Email address entered by the participant.',
+  comments varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'Comments entered by the participant.',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was updated in server local time.',
+  PRIMARY KEY (gratuityLogId),
+  UNIQUE KEY gratuityLogId (gratuityLogId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Stores participant information used for gratuity fulfillment.';
 
 -- --------------------------------------------------------
 
@@ -93,22 +93,22 @@ CREATE TABLE IF NOT EXISTS gratuity_log (
 
 DROP TABLE IF EXISTS log_transition;
 CREATE TABLE IF NOT EXISTS log_transition (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  serverTimestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  clientTimestamp bigint(20) DEFAULT NULL,
-  recordType enum('open','transition') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'transition',
-  sessionId bigint(20) unsigned NOT NULL DEFAULT '0',
-  studyVariationId int(10) unsigned NOT NULL DEFAULT '0',
-  taskId int(10) unsigned NOT NULL DEFAULT '0',
-  taskVariationId int(10) unsigned NOT NULL DEFAULT '0',
-  fromUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'URL of page with link',
-  toUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'URL of link destination',
-  linkClass varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'class attribute of link',
-  linkId varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ID attribute of link',
-  linkTag varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'class attribute of link',
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  logTransitionId bigint(20) unsigned NOT NULL  AUTO_INCREMENT COMMENT 'Unique record ID.',
+  serverTimestamp timestamp  NOT NULL  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'Time read from server that the activity took place. Stored in server time zone.',
+  clientTimestamp bigint(20) unsigned  DEFAULT NULL COMMENT 'The timestamp information provided by the client site. Treated as a number. If NULL or 0, the serverTimestamp field is used for timing activities.',
+  recordType enum('open','transition')  COLLATE utf8_unicode_ci  NOT NULL   COMMENT 'The type of log record. Possible values are: "open" - records page loads; "transition" - records navigation activity.',
+  sessionId bigint(20) unsigned NOT NULL   COMMENT 'The participant session in which the activity occured.',
+  sessionConfigId bigint(20) unsigned NOT NULL   COMMENT 'The study config record in use when the activity ocurred.',
+  stepIndex int(10) unsigned NOT NULL   COMMENT 'The index of the protocol step in which the activity ocurred.',
+  taskVariationId int(10) unsigned NOT NULL   COMMENT 'RESERVED',
+  fromUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'URL of page with link that was opened or clicked',
+  toUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'URL of link destination',
+  linkClass varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'class attribute of link',
+  linkId varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'ID attribute of link',
+  linkTag varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL COMMENT 'Tag type of link',
+  PRIMARY KEY (logTransitionId),
+  UNIQUE KEY logTransitionId (logTransitionId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Records activity from the site being tested.';
 
 -- --------------------------------------------------------
 
@@ -118,53 +118,68 @@ CREATE TABLE IF NOT EXISTS log_transition (
 
 DROP TABLE IF EXISTS session_config;
 CREATE TABLE IF NOT EXISTS session_config (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  sessionId bigint(20) unsigned NOT NULL DEFAULT '0',
-  studyId bigint(20) unsigned NOT NULL DEFAULT '0',
-  studyVariationId int(10) unsigned NOT NULL DEFAULT '0',
-  taskId int(10) unsigned NOT NULL DEFAULT '0',
-  taskVariationId int(10) unsigned NOT NULL DEFAULT '0',
-  variationCssUrl varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  taskBarCssUrl varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  taskStartUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  taskReturnUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  exitButtonText varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Exit task',
-  tabShowText varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Show',
-  tabHideText varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Hide',
-  taskHtml longtext COLLATE utf8_unicode_ci,
-  startPageHtml longtext COLLATE utf8_unicode_ci,
-  finishPageHtml longtext COLLATE utf8_unicode_ci,
-  startPageNextUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  finishPageNextUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  measuredTask int(10) unsigned NOT NULL DEFAULT '1',
-  taskType enum('pre','post','taskOnly','prePostTask') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'prePostTask',
-  dateCreated datetime NOT NULL,
-  dateModified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  sessionConfigId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique record ID',
+  sessionId bigint(20) unsigned NOT NULL DEFAULT '0'  COMMENT 'Participant session to which this configuration belongs',
+  studyId bigint(20) unsigned NOT NULL DEFAULT '0'  COMMENT 'ID of study that defined this session',
+  studyStepId bigint(20) unsigned NOT NULL DEFAULT '0'  COMMENT 'ID of the study step this record references',
+  stepIndex int(10) unsigned NOT NULL DEFAULT '0'  COMMENT 'Step sequence',
+  preTaskPageUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'URL of pre-task page if used. null means dont show a pre-task page for this step.',
+  preTaskPageHtml longtext  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'HTML to show in the pre-task page',
+  preTaskPageNextUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Destination of the next button on the pre-task page',
+  studyTaskPageUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'URL to the first page of the web page for the study task in this step. If null, this step does not have a study task.',
+  defaultTaskBarRoot enum('wlux','client')   DEFAULT 'wlux' COMMENT 'Root path of the CSS file for the task bar to show in the study page',
+  taskBarCssPath varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Path to the CSS file for the task bar. If empty, use default for study.',
+  taskBarHtml longtext  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Text to show in the task bar on the client web siteNOTE: if submitted value does not start with an "<" character, wrap the submitted value in "<p>" tags.',
+  exitButtonText varchar(255)  COLLATE utf8_unicode_ci   DEFAULT 'Exit task' COMMENT 'Text to display in the exit task button. If empty, use default for study.',
+  tabShowText varchar(255)  COLLATE utf8_unicode_ci   DEFAULT 'Show' COMMENT 'Text to display in the task-bar SHOW button. If empty, use default for study.',
+  tabHideText varchar(255)  COLLATE utf8_unicode_ci   DEFAULT 'Hide' COMMENT 'Text to display in the task-bar HIDE button. If empty, use default for study.',
+  studyTaskReturnUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'URL of the page to navigate to when the participent ends the task on the client site.',
+  postTaskPageUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'URL of the post-task page, if used.  null means dont show a pre-task page for this step.',
+  postTaskPageHtml longtext  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'HTML to show in the post-task page',
+  postTaskPageNextUrl varchar(1024)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Destination of the next button on the post-task page',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was created in server local time.',
+  PRIMARY KEY (sessionConfigId),
+  UNIQUE KEY sessionConfigId (sessionConfigId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Table used during participant sessions to record the configurations used by each task and variation of a session.';
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table 'session_log'
+-- Table structure for table 'session_config_details'
 --
 
-DROP TABLE IF EXISTS session_log;
-CREATE TABLE IF NOT EXISTS session_log (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  sessionId bigint(20) unsigned NOT NULL DEFAULT '0',
-  studyId bigint(20) unsigned NOT NULL DEFAULT '0',
-  studyVariationId int(10) unsigned NOT NULL DEFAULT '0',
-  taskId int(10) unsigned NOT NULL DEFAULT '0',
-  taskVariationId int(10) unsigned NOT NULL DEFAULT '0',
-  startTime datetime DEFAULT NULL,
-  endTime datetime DEFAULT NULL,
-  dateCreated datetime NOT NULL,
-  dateModified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+DROP TABLE IF EXISTS session_config_details;
+CREATE TABLE IF NOT EXISTS session_config_details (
+  studyConfigDetailId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique record ID',
+  sessionConfigId bigint(20) unsigned NOT NULL  COMMENT 'ID of study config record to which this record relates',
+  detailType enum('measure','variable','variation')  NOT NULL  COMMENT 'detail type (describes to what detailId refers)',
+  detailId bigint(20) unsigned NOT NULL  COMMENT 'ID in corresponding table',
+  PRIMARY KEY (studyConfigDetailId),
+  UNIQUE KEY studyConfigDetailId (studyConfigDetailId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Table used during participant sessions to record the configuration details of a session.';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table 'log_session'
+--
+
+DROP TABLE IF EXISTS log_session;
+CREATE TABLE IF NOT EXISTS log_session (
+  sessionLogId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique record ID',
+  sessionId bigint(20) unsigned NOT NULL  COMMENT 'ID of participant session',
+  studyId bigint(20) unsigned NOT NULL  COMMENT 'ID of study that defined this participant session',
+  sessionConfigId int(10) unsigned NOT NULL  COMMENT 'ID study variation this record describes',
+  taskId int(10) unsigned NOT NULL  COMMENT 'ID of task this record describes. Records with a taskId=0 describe the entire session.',
+  taskVariationNo int(10) unsigned NOT NULL  COMMENT 'RESERVED',
+  startTime datetime  NOT NULL  COMMENT 'The time, in server local time, that this task/variation began.',
+  endTime datetime  NOT NULL  COMMENT 'The time, in server local time, that this task/variation ended.',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was created in server local time.',
+  PRIMARY KEY (sessionLogId),
+  UNIQUE KEY sessionLogId (sessionLogId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Records the tasks and variations used during a participant session.';
 
 -- --------------------------------------------------------
 
@@ -174,95 +189,93 @@ CREATE TABLE IF NOT EXISTS session_log (
 
 DROP TABLE IF EXISTS study_general;
 CREATE TABLE IF NOT EXISTS study_general (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  ownerId bigint(20) unsigned NOT NULL DEFAULT '0',
-  studyName varchar(127) COLLATE utf8_unicode_ci NOT NULL,
-  studyDescription longtext COLLATE utf8_unicode_ci NOT NULL,
-  researcherOrg varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  researcherFirstName varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  researcherLastName varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  researcherEmail varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  defaultTimeZone enum('UTC+00 Europe/London','UTC+01 Europe/Berlin','UTC+02 Europe/Kiev','UTC+03 Asia/Riyadh','UTC+03:30 Asia/Tehran','UTC+04 Europe/Moscow','UTC+04:30 Asia/Kabul','UTC+05 Indian/Maldives','UTC+05:30 Asia/Calcutta','UTC+05:45 Asia/Kathmandu','UTC+06 Indian/Chagos','UTC+06:30 Asia/Rangoon','UTC+07 Asia/Bangkok','UTC+08 Asia/Brunei','UTC+08:45 Australia/Eucla','UTC+09 Asia/Tokyo','UTC+09:30 Australia/Adelaide','UTC+10 Australia/Melbourne','UTC+10:30 Australia/Lord_Howe','UTC+11 Pacific/Pohnpei','UTC+11:30 Pacific/Norfolk','UTC+12 Asia/Kamchatka','UTC+12:45 Pacific/Chatham','UTC+13 Pacific/Tongatapu','UTC+14 Pacific/Kiritimati','UTC−01 America/Scoresbysund','UTC−02 America/Atlantic islands','UTC−03 America/Argentina/Mendoza','UTC−03:30 Canada/Newfoundland','UTC−04 America/Halifax','UTC−04:30 America/Caracas','UTC−05 America/New_York','UTC−06 America/Chicago','UTC−07 America/Denver','UTC−08 America/Los_Angeles','UTC−09 America/Anchorage','UTC−09:30 Pacific/Marquesas','UTC−10 America/Adak','UTC−11 Pacific/Midway') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC−08 America/Los_Angeles',
-  defaultVariationMethod enum('singleRandom') COLLATE utf8_unicode_ci NOT NULL,
-  defaultTaskBarRoot enum('wlux','client') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'wlux',
-  defaultTaskBarCssPath varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  defaultVariationRoot enum('wlux','client') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'wlux',
-  defaultVariationCssPath varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  defaultExitButtonText varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Exit task',
-  defaultTabShowText varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Show',
-  defaultTabHideText varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Hide',
-  clientTimeStampFormat enum('default') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default',
-  studyStatus enum('draft','scheduled','completed','archived') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'draft',
-  dateCreated datetime NOT NULL,
-  dateModified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq),
+  studyId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique ID of a study configuration',
+  ownerId bigint(20) unsigned NOT NULL  COMMENT 'The account to which the study belongs. The value is the user_accounts:accountId of the owner.',
+  studyName varchar(127)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'The human-readable name of the study.',
+  studyDescription longtext  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Free text description of the study.',
+  researcherOrg varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Organization name listed as contact info for the researcher who is the primary (public) contact for this study.',
+  researcherFirstName varchar(64)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'First name for researcher who is the primary (public) contact for this study.',
+  researcherLastName varchar(64)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Last name for the researcher who is the primary (public) contact for this study.',
+  researcherEmail varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Contact email for the researcher who is the primary (public) contact for this study.',
+  researcherAddress varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Mailing addres for the researcher who is the primary (public) contact for this study.',
+  ethicsBoardEmail varchar(255)  COLLATE utf8_unicode_ci   DEFAULT NULL  COMMENT 'Contact email for the ethics board / institutional review board who approved this studys procedures.',
+  defaultTimeZone enum('UTC+00 Europe/London','UTC+01 Europe/Berlin','UTC+02 Europe/Kiev','UTC+03 Asia/Riyadh','UTC+03:30 Asia/Tehran','UTC+04 Europe/Moscow','UTC+04:30 Asia/Kabul','UTC+05 Indian/Maldives','UTC+05:30 Asia/Calcutta','UTC+05:45 Asia/Kathmandu','UTC+06 Indian/Chagos','UTC+06:30 Asia/Rangoon','UTC+07 Asia/Bangkok','UTC+08 Asia/Brunei','UTC+08:45 Australia/Eucla','UTC+09 Asia/Tokyo','UTC+09:30 Australia/Adelaide','UTC+10 Australia/Melbourne','UTC+10:30 Australia/Lord_Howe','UTC+11 Pacific/Pohnpei','UTC+11:30 Pacific/Norfolk','UTC+12 Asia/Kamchatka','UTC+12:45 Pacific/Chatham','UTC+13 Pacific/Tongatapu','UTC+14 Pacific/Kiritimati','UTC−01 America/Scoresbysund','UTC−02 America/Atlantic islands','UTC−03 America/Argentina/Mendoza','UTC−03:30 Canada/Newfoundland','UTC−04 America/Halifax','UTC−04:30 America/Caracas','UTC−05 America/New_York','UTC−06 America/Chicago','UTC−07 America/Denver','UTC−08 America/Los_Angeles','UTC−09 America/Anchorage','UTC−09:30 Pacific/Marquesas','UTC−10 America/Adak','UTC−11 Pacific/Midway') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC−08 America/Los_Angeles' COMMENT 'Default time zone to use for this account',
+  defaultVariationMethod enum('singleRandom')   DEFAULT 'singleRandom' COMMENT 'Describes how IV levels are selected during a participant session.',
+  defaultTaskBarRoot enum('wlux','client')   DEFAULT 'wlux' COMMENT 'The URL root path to use for the task bar CSS.',
+  defaultTaskBarCssPath varchar(1024)  COLLATE utf8_unicode_ci NOT NULL  COMMENT 'The path to use for the task bar CSS from the specified root path.',
+  defaultVariationRoot enum('wlux','client')   DEFAULT 'wlux' COMMENT 'The URL root path to use for the variation CSS files.',
+  defaultVariationCssPath varchar(1024)  COLLATE utf8_unicode_ci NOT NULL  COMMENT 'The path to use for the variation CSS files from the specified root path.',
+  defaultExitButtonText varchar(255)  COLLATE utf8_unicode_ci   DEFAULT 'Exit task' COMMENT 'Text to display on the button that ends the task on the client site and returns to the page desribed by the taskReturnUrl.',
+  defaultTabShowText varchar(255)  COLLATE utf8_unicode_ci   DEFAULT 'Show' COMMENT 'Text to display on the SHOW button of the the task bar displayed on the client site during a task.',
+  defaultTabHideText varchar(255)  COLLATE utf8_unicode_ci   DEFAULT 'Hide' COMMENT 'Text to display on the HIDE button of the the task bar displayed on the client site during a task.',
+  clientTimeStampFormat enum('default')   DEFAULT 'default' COMMENT 'The formula to use to interpret the client time stamp sent to the log_transition file.',
+  studyStatus enum('draft','scheduled','completed','archived')   DEFAULT 'draft' COMMENT 'The current state of this study.',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was created in server local time.',
+  PRIMARY KEY (studyId),
+  UNIQUE KEY studyId (studyId),
   UNIQUE KEY studyName (studyName),
-  KEY recordSeq_2 (recordSeq),
+  KEY studyId_2 (studyId),
   KEY studyName_2 (studyName)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Describes the general characteristics of a study.';
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table 'study_schedule'
+-- Table structure for table 'study_periods'
 --
 
-DROP TABLE IF EXISTS study_schedule;
-CREATE TABLE IF NOT EXISTS study_schedule (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  studyId bigint(20) unsigned NOT NULL DEFAULT '0',
-  ownerId bigint(20) unsigned NOT NULL DEFAULT '0',
-  periodName varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  periodDescription longtext COLLATE utf8_unicode_ci NOT NULL,
-  periodParticipantLimit bigint(20) NOT NULL DEFAULT '-1',
-  periodStartTime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  periodEndTime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  periodAnnouncementText longtext COLLATE utf8_unicode_ci NOT NULL,
-  periodEmailList longtext COLLATE utf8_unicode_ci NOT NULL,
-  periodTaskSequence enum('sequential','random') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'sequential',
-  periodStudyVariations enum('singleRandom') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'singleRandom',
-  periodTimeZone enum('UTC+00 Europe/London','UTC+01 Europe/Berlin','UTC+02 Europe/Kiev','UTC+03 Asia/Riyadh','UTC+03:30 Asia/Tehran','UTC+04 Europe/Moscow','UTC+04:30 Asia/Kabul','UTC+05 Indian/Maldives','UTC+05:30 Asia/Calcutta','UTC+05:45 Asia/Kathmandu','UTC+06 Indian/Chagos','UTC+06:30 Asia/Rangoon','UTC+07 Asia/Bangkok','UTC+08 Asia/Brunei','UTC+08:45 Australia/Eucla','UTC+09 Asia/Tokyo','UTC+09:30 Australia/Adelaide','UTC+10 Australia/Melbourne','UTC+10:30 Australia/Lord_Howe','UTC+11 Pacific/Pohnpei','UTC+11:30 Pacific/Norfolk','UTC+12 Asia/Kamchatka','UTC+12:45 Pacific/Chatham','UTC+13 Pacific/Tongatapu','UTC+14 Pacific/Kiritimati','UTC−01 America/Scoresbysund','UTC−02 America/Atlantic islands','UTC−03 America/Argentina/Mendoza','UTC−03:30 Canada/Newfoundland','UTC−04 America/Halifax','UTC−04:30 America/Caracas','UTC−05 America/New_York','UTC−06 America/Chicago','UTC−07 America/Denver','UTC−08 America/Los_Angeles','UTC−09 America/Anchorage','UTC−09:30 Pacific/Marquesas','UTC−10 America/Adak','UTC−11 Pacific/Midway') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC−08 America/Los_Angeles',
-  dateCreated datetime NOT NULL,
-  dateModified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq),
-  KEY recordSeq_2 (recordSeq),
+DROP TABLE IF EXISTS study_periods;
+CREATE TABLE IF NOT EXISTS study_periods (
+  studyPeriodId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique record ID',
+  studyId bigint(20) unsigned NOT NULL  COMMENT 'Study ID (study_general:studyId of the study to which this schedule period belongs. Study owner is defined by the study ID in the study_general table.',
+  periodName varchar(64) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'The human-readable name of this study period.',
+  periodDescription longtext COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Free text field to describe the study period.',
+  periodParticipantLimit bigint(20) unsigned  DEFAULT NULL COMMENT 'The maximum number of participant sessions to accept during this study period. -1 = no limit. This is the total number of sessions to allow: completed and partial.',
+  periodStartTime datetime  NOT NULL  COMMENT 'Start time of this period. Participant sessions will be allowed when the current time is > this time. A time of 0 = the session starts immediately.',
+  periodEndTime datetime  NOT NULL  COMMENT 'End time of this period. Participant sessions will be allowed when the current time is < this time. A time of 0 = the session runs forever.',
+  periodAnnouncementText longtext COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Recruitment email text sent to periodEmailList when study opens.',
+  periodEmailList longtext COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Comma-separated list of e-mail names',
+  periodTaskSequence enum('sequential','random')   DEFAULT 'random' COMMENT 'Specifies the task order of tasks marked as programmed.',
+  periodStudyVariations enum('singleRandom')   DEFAULT 'singleRandom' COMMENT 'For now. Future options could include: singleSequential,mulitpleRandom, multipleSequential, etc.)',
+  periodTimeZone enum('UTC+00 Europe/London','UTC+01 Europe/Berlin','UTC+02 Europe/Kiev','UTC+03 Asia/Riyadh','UTC+03:30 Asia/Tehran','UTC+04 Europe/Moscow','UTC+04:30 Asia/Kabul','UTC+05 Indian/Maldives','UTC+05:30 Asia/Calcutta','UTC+05:45 Asia/Kathmandu','UTC+06 Indian/Chagos','UTC+06:30 Asia/Rangoon','UTC+07 Asia/Bangkok','UTC+08 Asia/Brunei','UTC+08:45 Australia/Eucla','UTC+09 Asia/Tokyo','UTC+09:30 Australia/Adelaide','UTC+10 Australia/Melbourne','UTC+10:30 Australia/Lord_Howe','UTC+11 Pacific/Pohnpei','UTC+11:30 Pacific/Norfolk','UTC+12 Asia/Kamchatka','UTC+12:45 Pacific/Chatham','UTC+13 Pacific/Tongatapu','UTC+14 Pacific/Kiritimati','UTC−01 America/Scoresbysund','UTC−02 America/Atlantic islands','UTC−03 America/Argentina/Mendoza','UTC−03:30 Canada/Newfoundland','UTC−04 America/Halifax','UTC−04:30 America/Caracas','UTC−05 America/New_York','UTC−06 America/Chicago','UTC−07 America/Denver','UTC−08 America/Los_Angeles','UTC−09 America/Anchorage','UTC−09:30 Pacific/Marquesas','UTC−10 America/Adak','UTC−11 Pacific/Midway') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC−08 America/Los_Angeles' COMMENT 'Defaults to study timezone value',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was updated in server local time.',
+  PRIMARY KEY (studyPeriodId),
+  UNIQUE KEY studyPeriodId (studyPeriodId),
+  KEY studyPeriodId_2 (studyPeriodId),
   KEY studyId_2 (studyId)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 COMMENT 'Describes when a study can accept participants.';
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table 'study_tasks'
+-- Table structure for table 'study_steps'
 --
 
-DROP TABLE IF EXISTS study_tasks;
-CREATE TABLE IF NOT EXISTS study_tasks (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  studyId bigint(20) unsigned NOT NULL DEFAULT '0',
-  taskId int(10) unsigned NOT NULL DEFAULT '0',
-  variationId int(10) unsigned NOT NULL DEFAULT '0',
-  variationRoot enum('wlux','client') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'wlux',
-  variationCssPath varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  taskBarRoot enum('wlux','client') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'wlux',
-  taskBarCssPath varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  taskStartUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  taskReturnUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  exitButtonText varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Exit task',
-  tabShowText varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Show',
-  tabHideText varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Hide',
-  taskHtml longtext COLLATE utf8_unicode_ci,
-  startPageHtml longtext COLLATE utf8_unicode_ci,
-  finishPageHtml longtext COLLATE utf8_unicode_ci,
-  startPageNextUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  finishPageNextUrl varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  measuredTask int(10) unsigned NOT NULL DEFAULT '1',
-  taskType enum('pre','post','taskOnly','prePostTask') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'prePostTask',
-  dateCreated datetime NOT NULL,
-  dateModified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq)
+DROP TABLE IF EXISTS study_steps;
+CREATE TABLE IF NOT EXISTS study_steps (
+  studyStepId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique record ID',
+  studyId bigint(20) unsigned NOT NULL  COMMENT 'Study to which this step belongs',
+  stepIndex int(10) unsigned NOT NULL  COMMENT 'Step sequence',
+  preTaskPageUrl varchar(1024) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'URL of pre-task page if used. null means dont show a pre-task page for this step.',
+  preTaskPageHtml longtext COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'HTML to show in the pre-task page',
+  preTaskPageNextUrl varchar(1024) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Destination of the next button on the pre-task page',
+  studyTaskPageUrl varchar(1024) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'URL to the first page of the web page for the study task in this step. If null, this step does not have a study task.',
+  defaultTaskBarRoot enum('wlux','client')   DEFAULT NULL COMMENT 'Root path of the CSS file for the task bar to show in the study page',
+  taskBarCssPath varchar(1024) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Path to the CSS file for the task bar. If empty, use default for study.',
+  taskBarHtml longtext COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Text to show in the task bar on the client web siteNOTE: if submitted value does not start with an "<" character, wrap the submitted value in "<p>" tags.',
+  exitButtonText varchar(255) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Text to display in the exit task button. If empty, use default for study.',
+  tabShowText varchar(255) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Text to display in the task-bar SHOW button. If empty, use default for study.',
+  tabHideText varchar(255) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Text to display in the task-bar HIDE button. If empty, use default for study.',
+  studyTaskReturnUrl varchar(1024) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'URL of the page to navigate to when the participent ends the task on the client site.',
+  postTaskPageUrl varchar(1024) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'URL of the post-task page, if used.  null means dont show a pre-task page for this step.',
+  postTaskPageHtml longtext COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'HTML to show in the post-task page',
+  postTaskPageNextUrl varchar(1024) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Destination of the next button on the post-task page',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was updated in server local time.',
+  PRIMARY KEY (studyStepId),
+  UNIQUE KEY studyStepId (studyStepId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -273,17 +286,16 @@ CREATE TABLE IF NOT EXISTS study_tasks (
 
 DROP TABLE IF EXISTS study_variations;
 CREATE TABLE IF NOT EXISTS study_variations (
-  recordSeq bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  studyId bigint(20) unsigned NOT NULL DEFAULT '0',
-  ownerId bigint(20) unsigned NOT NULL DEFAULT '0',
-  variationNo int(10) unsigned NOT NULL DEFAULT '0',
-  variationName varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  variationRoot enum('wlux','client') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'wlux',
-  variationCssPath varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  dateCreated datetime NOT NULL,
-  dateModified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (recordSeq),
-  UNIQUE KEY recordSeq (recordSeq)
+  studyVariationId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique record ID of this variation',
+  studyVariableId bigint(20) unsigned NOT NULL  COMMENT 'ID of the study variable to which this variation applies',
+  variationName varchar(64) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'Human-readable name of this variation',
+  variationDesc longtext COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Free-form description of this variation',
+  variationRoot enum('wlux','client')   DEFAULT 'wlux' COMMENT 'Just these for now, we can support "other" in the future)',
+  variationCssPath varchar(1024) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'The path from the selected root to the CSS file that defines the variation. This should probably be validated in the UI…',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was updated in server local time.',
+  PRIMARY KEY (studyVariationId),
+  UNIQUE KEY studyVariationId (studyVariationId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -294,34 +306,34 @@ CREATE TABLE IF NOT EXISTS study_variations (
 
 DROP TABLE IF EXISTS `user_accounts`;
 CREATE TABLE IF NOT EXISTS `user_accounts` (
-  `recordSeq` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `ownerId` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `acctPassword` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
-  `firstName` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `lastName` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `greetingName` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `orgName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `accountType` enum('admin','researcher','reviewer') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'researcher',
-  `wluxUrlRoot` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `clientUrlRoot` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `userFileRoot` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `userWebRoot` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `defaultTimeZone` enum('UTC+00 Europe/London','UTC+01 Europe/Berlin','UTC+02 Europe/Kiev','UTC+03 Asia/Riyadh','UTC+03:30 Asia/Tehran','UTC+04 Europe/Moscow','UTC+04:30 Asia/Kabul','UTC+05 Indian/Maldives','UTC+05:30 Asia/Calcutta','UTC+05:45 Asia/Kathmandu','UTC+06 Indian/Chagos','UTC+06:30 Asia/Rangoon','UTC+07 Asia/Bangkok','UTC+08 Asia/Brunei','UTC+08:45 Australia/Eucla','UTC+09 Asia/Tokyo','UTC+09:30 Australia/Adelaide','UTC+10 Australia/Melbourne','UTC+10:30 Australia/Lord_Howe','UTC+11 Pacific/Pohnpei','UTC+11:30 Pacific/Norfolk','UTC+12 Asia/Kamchatka','UTC+12:45 Pacific/Chatham','UTC+13 Pacific/Tongatapu','UTC+14 Pacific/Kiritimati','UTC−01 America/Scoresbysund','UTC−02 America/Atlantic islands','UTC−03 America/Argentina/Mendoza','UTC−03:30 Canada/Newfoundland','UTC−04 America/Halifax','UTC−04:30 America/Caracas','UTC−05 America/New_York','UTC−06 America/Chicago','UTC−07 America/Denver','UTC−08 America/Los_Angeles','UTC−09 America/Anchorage','UTC−09:30 Pacific/Marquesas','UTC−10 America/Adak','UTC−11 Pacific/Midway') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC−08 America/Los_Angeles',
-  `dateCreated` datetime NOT NULL,
-  `dateModified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`recordSeq`),
-  UNIQUE KEY `recordSeq` (`recordSeq`),
+  accountId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'This is the account ID used when testing ownership',
+  username varchar(64) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'Account user name',
+  ownerId bigint(20) unsigned NOT NULL  COMMENT 'The account that created this account',
+  acctPassword varchar(512) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'hashed/encrypted password value; empty = no password (default)',
+  firstName varchar(64) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'First name',
+  lastName varchar(64) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Last name',
+  greetingName varchar(64) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'Name used on personalized pages, defaults to first name if not provided.',
+  orgName varchar(255) COLLATE utf8_unicode_ci  DEFAULT NULL COMMENT 'Organizational name',
+  email varchar(255) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'Email of account contact',
+  accountType enum('admin','researcher','reviewer')   DEFAULT 'researcher' COMMENT 'for now this is how all accounts are defined',
+  wluxUrlRoot varchar(255) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'The root of pages and files hosted on the WLUX server',
+  clientUrlRoot varchar(255) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'The default root of the server being tested (this will serve as the default value to use when defining a study)',
+  userFileRoot varchar(255) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'Internal file path used on server',
+  userWebRoot varchar(255) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'Internal file path used on server',
+  defaultTimeZone enum('UTC+00 Europe/London','UTC+01 Europe/Berlin','UTC+02 Europe/Kiev','UTC+03 Asia/Riyadh','UTC+03:30 Asia/Tehran','UTC+04 Europe/Moscow','UTC+04:30 Asia/Kabul','UTC+05 Indian/Maldives','UTC+05:30 Asia/Calcutta','UTC+05:45 Asia/Kathmandu','UTC+06 Indian/Chagos','UTC+06:30 Asia/Rangoon','UTC+07 Asia/Bangkok','UTC+08 Asia/Brunei','UTC+08:45 Australia/Eucla','UTC+09 Asia/Tokyo','UTC+09:30 Australia/Adelaide','UTC+10 Australia/Melbourne','UTC+10:30 Australia/Lord_Howe','UTC+11 Pacific/Pohnpei','UTC+11:30 Pacific/Norfolk','UTC+12 Asia/Kamchatka','UTC+12:45 Pacific/Chatham','UTC+13 Pacific/Tongatapu','UTC+14 Pacific/Kiritimati','UTC−01 America/Scoresbysund','UTC−02 America/Atlantic islands','UTC−03 America/Argentina/Mendoza','UTC−03:30 Canada/Newfoundland','UTC−04 America/Halifax','UTC−04:30 America/Caracas','UTC−05 America/New_York','UTC−06 America/Chicago','UTC−07 America/Denver','UTC−08 America/Los_Angeles','UTC−09 America/Anchorage','UTC−09:30 Pacific/Marquesas','UTC−10 America/Adak','UTC−11 Pacific/Midway') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC−08 America/Los_Angeles' COMMENT 'Default time zone to use for this account',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was updated in server local time.',
+  PRIMARY KEY (`accountId`),
+  UNIQUE KEY `accountId` (`accountId`),
   UNIQUE KEY `username` (`username`),
-  KEY `recordSeq_2` (`recordSeq`),
+  KEY `accountId_2` (`accountId`),
   KEY `username_2` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `user_accounts`
 --
 
-INSERT INTO `user_accounts` (`recordSeq`, `username`, `ownerId`, `acctPassword`, `firstName`, `lastName`, `greetingName`, `orgName`, `email`, `accountType`, `wluxUrlRoot`, `clientUrlRoot`, `userFileRoot`, `userWebRoot`, `defaultTimeZone`, `dateCreated`, `dateModified`) VALUES
-(1, 'defaultAdmin', 0, '1Password', 'Default', 'Admin', 'Admin', 'IBUXL Research', 'ibuxl@example.com', 'admin', 'http://wlux.uw.edu/', 'http://wlux.uw.edu', '/User/WebLabUX', '/User/WebLabUX', 'UTC−08 America/Los_Angeles', NOW(), NOW()),
-(2, 'defaultResearcher', 0, '1Password', 'Default', 'Researcher', 'Researcher', 'IBUXL Research', 'ibuxl@example.com', 'researcher', 'http://wlux.uw.edu/', 'http://wlux.uw.edu/', '/User/WebLabUX', '/User/WebLabUX', 'UTC−08 America/Los_Angeles', NOW(), NOW());
+INSERT INTO `user_accounts` (`username`, `ownerId`, `acctPassword`, `firstName`, `lastName`, `greetingName`, `orgName`, `email`, `accountType`, `wluxUrlRoot`, `clientUrlRoot`, `userFileRoot`, `userWebRoot`, `defaultTimeZone`, `dateCreated`, `dateModified`) VALUES
+('defaultAdmin', 0, '1Password', 'Default', 'Admin', 'Admin', 'IBUXL Research', 'ibuxl@example.com', 'admin', 'http://wlux.uw.edu/', 'http://wlux.uw.edu', '/User/WebLabUX', '/User/WebLabUX', 'UTC−08 America/Los_Angeles', NOW(), NOW()),
+('defaultResearcher', 0, '1Password', 'Default', 'Researcher', 'Researcher', 'IBUXL Research', 'ibuxl@example.com', 'researcher', 'http://wlux.uw.edu/', 'http://wlux.uw.edu/', '/User/WebLabUX', '/User/WebLabUX', 'UTC−08 America/Los_Angeles', NOW(), NOW());

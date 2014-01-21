@@ -75,10 +75,12 @@ require 'db_utils.php';
 			// create a new gratuity_log record 
 				
 			$queryString = format_object_for_SQL_insert (DB_TABLE_GRATUITY_LOG, $logData);
-			$qResult = mysqli_query($link, $queryString);
+			$qResult = @mysqli_query($link, $queryString);
 			if (!$qResult) {
 				// SQL ERROR
 				$errData = get_error_message ($link, 500, 1);
+				$response['error'] = $errData;
+				$response['error']['sqlMessage'] = mysqli_error($link);
 			} else {
 				// success
 				// finish start response buffer

@@ -54,10 +54,10 @@ require 'config_files.php';
 	}
 	
 	if (empty($retVal)) {				
-		$queryString = 'SELECT status, message from '.$DB_ERROR_MESSAGES.
-			' WHERE status = '.$status.
-			' AND variation = "'.$variation.
-			'" AND language = "'.$language.'"';
+		$queryString = 'SELECT errorStatus as status, messageText as message from '.$DB_ERROR_MESSAGES.
+			' WHERE errorStatus = '.$status.
+			' AND messageVariation = "'.$variation.
+			'" AND messageLanguage = "'.$language.'"';
 		$result = @mysqli_query ($link, $queryString);
 		if (mysqli_num_rows($result)  > 0) {
 			// should be only 1, but if more than one, take the first one

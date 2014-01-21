@@ -1,0 +1,9 @@
+{"test405Results":[ 
+{"error":{"status":405,"message":"HTTP method not allowed"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\account.php"}}, 
+{"error":{"status":405,"message":"HTTP method not allowed"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\debug.php"}}, 
+{"debug":{"auth":{"access":0},"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\gratuity.php"},"error":{"status":405,"message":"HTTP method not allowed"}}, 
+{"error":{"status":405,"message":"HTTP method not allowed"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\log.php"}}, 
+{"error":{"status":405,"message":"HTTP method not allowed"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\session.php"}}, 
+{"error":{"status":405,"message":"HTTP method not allowed"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\signin.php"}}, 
+{"error":{"status":405,"message":"HTTP method not allowed"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\signout.php"}}, 
+{"error":{"status":405,"message":"HTTP method not allowed"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study.php"}}]} 

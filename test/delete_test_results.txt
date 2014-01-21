@@ -1,0 +1,8 @@
+{"deleteResults":[ 
+{"error":{"status":501,"message":"Command not recognized"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\account_delete.php","postData":{"bad":{"some":"stuff"}},"getData":{"bad":{"some":"stuff"}}}}, 
+{"error":{"status":501,"message":"Command not recognized"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_delete.php","postData":{"bad":{"some":"stuff"}},"getData":{"bad":{"some":"stuff"}}}}, 
+{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\account_delete_user.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}, 
+{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_delete_config.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}, 
+{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_delete_task.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}, 
+{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_delete_schedule.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}, 
+{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_delete_variable.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}]} 
