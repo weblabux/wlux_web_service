@@ -16,7 +16,7 @@ SET time_zone = "+08:00";
 
 CREATE DATABASE IF NOT EXISTS wlux_services 
     DEFAULT CHARACTER SET utf8
-    DEFAULT COLLATE utf8_unicode_ci
+    DEFAULT COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -337,3 +337,62 @@ CREATE TABLE IF NOT EXISTS `user_accounts` (
 INSERT INTO `user_accounts` (`username`, `ownerId`, `acctPassword`, `firstName`, `lastName`, `greetingName`, `orgName`, `email`, `accountType`, `wluxUrlRoot`, `clientUrlRoot`, `userFileRoot`, `userWebRoot`, `defaultTimeZone`, `dateCreated`, `dateModified`) VALUES
 ('defaultAdmin', 0, '1Password', 'Default', 'Admin', 'Admin', 'IBUXL Research', 'ibuxl@example.com', 'admin', 'http://wlux.uw.edu/', 'http://wlux.uw.edu', '/User/WebLabUX', '/User/WebLabUX', 'UTC−08 America/Los_Angeles', NOW(), NOW()),
 ('defaultResearcher', 0, '1Password', 'Default', 'Researcher', 'Researcher', 'IBUXL Research', 'ibuxl@example.com', 'researcher', 'http://wlux.uw.edu/', 'http://wlux.uw.edu/', '/User/WebLabUX', '/User/WebLabUX', 'UTC−08 America/Los_Angeles', NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table 'study_measures'
+--
+
+DROP TABLE IF EXISTS study_measures;
+CREATE TABLE IF NOT EXISTS study_measures (
+  studyMeasureId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+  studyId bigint(20) unsigned NOT NULL  COMMENT 'relational link to study id',
+  measureId int(10) unsigned NOT NULL  COMMENT 'Relative index of this measure',
+  variableType enum('participantCount','taskTime')  NOT NULL  COMMENT 'Just to name a few... Each ENUM will have its own computation and validation algorithm',
+  dataType enum('string','integer','float','date','time')  NOT NULL  COMMENT 'Data type returned by this variable',
+  displayUnits varchar(64) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'Units to display with this value (if any)',
+  computeBy enum('task','participant','session','study')  NOT NULL  COMMENT 'How to summarize or calculate this measure',
+  displayBy enum('task','participant','session','study')  NOT NULL  COMMENT 'How to display this measure in a report',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was updated in server local time.',
+  PRIMARY KEY (`studyMeasureId`),
+  UNIQUE KEY `studyMeasureId` (`studyMeasureId`),
+  KEY `studyMeasureId_2` (`studyMeasureId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table 'study_variables'
+--
+
+DROP TABLE IF EXISTS study_variables;
+CREATE TABLE IF NOT EXISTS study_variables (
+  studyVariableId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key -- This table holds Independent Variables. Each record in this table has a one to many relation with study_variations which holds the LEVELS for each IV in this table',
+  studyId bigint(20) unsigned NOT NULL  COMMENT 'Relation back to the study, defined in "study_general:studyId". A study can have from one to many variables.',
+  variableName varchar(64) COLLATE utf8_unicode_ci NOT NULL  COMMENT 'The human-readable name of this Independent Variable (e.g., "menu style" or "color scheme")',
+  dateCreated datetime  NOT NULL  COMMENT 'The date the record was created in server local time.',
+  dateModified timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'The date the record was updated in server local time.',
+  PRIMARY KEY (`studyVariableId`),
+  UNIQUE KEY `studyVariableId` (`studyVariableId`),
+  KEY `studyVariableId_2` (`studyVariableId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table 'study_step_details'
+--
+
+DROP TABLE IF EXISTS study_step_details;
+CREATE TABLE IF NOT EXISTS study_step_details (
+  studyStepDetailId bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique record ID',
+  studyStepId bigint(20) unsigned NOT NULL  COMMENT 'ID of study step to which this record relates',
+  detailType enum('measure','variable','variation')  NOT NULL  COMMENT 'detail type (describes to what detailId refers)',
+  detailId bigint(20) unsigned NOT NULL  COMMENT 'ID in corresponding table',
+  PRIMARY KEY (`studyStepDetailId`),
+  UNIQUE KEY `studyStepDetailId` (`studyStepDetailId`),
+  KEY `studyStepDetailId_2` (`studyStepDetailId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
