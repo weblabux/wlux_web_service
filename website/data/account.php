@@ -13,7 +13,7 @@ $link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
 if (!$link) {
 	require 'response_500_db_open_error.php';
 } else {
-	$debugState = int_GetDebug($link, 'gratuity', '');
+	$debugState = int_GetDebug($link, 'account', '');
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		// if the data is not in the the post form, try the query string		
 		if (empty($postData)) {
@@ -35,8 +35,7 @@ if (!$link) {
 		$response = _account_post($link, $postData);
 	} else if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 		$postData = json_decode(file_get_contents('php://input'), true);
-		// if the data is not in the raw post data, try the post form
-		// if the data is not in the raw post data, try the post form
+			// if the data is not in the raw post data, try the post form
 		if (empty($postData)) {
 			$postData = $_POST;
 		}
