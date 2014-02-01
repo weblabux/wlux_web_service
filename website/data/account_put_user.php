@@ -22,7 +22,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
- function _account_put_user ($link, $logData, $debugState) {
+ function _account_put_user ($link, $authInfo, $logData, $debugState) {
 require 'config_files.php';
 require 'db_utils.php';
 	// initialize the response buffer
@@ -31,6 +31,7 @@ require 'db_utils.php';
 	if ($debugState) {
 		$response['debug']['module'] = __FILE__;
 		$response['debug']['cmdData'] = $logData;
+		$response['debug']['auth'] = $authInfo;
 	}
     // not implemented
 	$errData = get_error_message ($link, 501);

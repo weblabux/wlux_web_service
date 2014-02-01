@@ -22,7 +22,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-function _debug_post_config ($link, $authInfo, $logData, $debugState) {
+ function _account_post_changepassword ($link, $authInfo, $logData, $debugState) {
 require 'config_files.php';
 require 'db_utils.php';
 	// initialize the response buffer

@@ -25,7 +25,7 @@
 /* require files for each command that supports this method */
 require 'debug_post_config.php';
 
-function _debug_post($link, $postData) {
+function _debug_post($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'debug', 'POST');
 	$actionTaken = false;
 	/*
@@ -44,7 +44,7 @@ function _debug_post($link, $postData) {
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _debug_post_config ($link, $logData, $debugState);
+		$response = _debug_post_config ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {

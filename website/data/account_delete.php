@@ -3,7 +3,7 @@
 /* require files for each command that supports this method */
 require 'account_delete_user.php';
 
-function _account_delete($link, $postData) {
+function _account_delete($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'account', 'DELETE');
 	$actionTaken = false;
 	/*
@@ -22,7 +22,7 @@ function _account_delete($link, $postData) {
 	$action = 'user';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _account_delete_user ($link, $logData, $debugState);
+		$response = _account_delete_user ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {
