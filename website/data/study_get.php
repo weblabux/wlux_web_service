@@ -36,6 +36,11 @@ require 'study_get_variation.php';
 
 function _study_get($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'study', 'GET');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}	
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.

@@ -22,41 +22,21 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-/* require files for each command that supports this method */
-require 'gratuity_get_study.php';
-
-function _gratuity_get($link, $authInfo, $postData) {
-	$debugState = int_GetDebug($link, 'gratuity', 'GET');
+function _study_delete_variation($link, $authInfo, $logData, $debugState) {
+require 'config_files.php';
+require 'db_utils.php';
+	// initialize the response buffer
+	$response = '';
+	// initialize the debug values
 	if ($debugState) {
 		$response['debug']['module'] = __FILE__;
-		$response['debug']['postData'] = $postData;
+		$response['debug']['cmdData'] = $logData;
 		$response['debug']['auth'] = $authInfo;
 	}
-	$actionTaken = false;
-	/*
-	* Repeat for each command that supports this method.
-	*  only one method allowed per call.
-	* 1. define $action to the the command
-	* 2. Test for that command
-	* 3. if true, call the function that performs the command
-	$action = 'config';
-	if (!$actionTaken && (!empty($postData[$action]))) {
-		$logData = $postData[$action];
-		$response = _gratuity_get_config ($link, $logData, $debugState);
-		$actionTaken = true;
-    } 
-	*/
-	$action = 'study';
-	if (!$actionTaken && (!empty($postData[$action]))) {
-		$logData = $postData[$action];
-		$response = _gratuity_get_study ($link, $authInfo, $logData, $debugState);
-		$actionTaken = true;
-    } 
-	if (!$actionTaken) {
-		$thisFile = __FILE__;
-		require 'response_501.php';
-	}
-
+    // not implemented
+	$errData = get_error_message ($link, 501);
+	$response['error'] = $errData;
+	
 	return $response;
 }
 ?>

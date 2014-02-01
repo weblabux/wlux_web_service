@@ -5,6 +5,11 @@ require 'account_delete_user.php';
 
 function _account_delete($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'account', 'DELETE');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.

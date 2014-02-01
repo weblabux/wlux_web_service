@@ -27,6 +27,11 @@ require 'debug_get_config.php';
 
 function _debug_get($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'debug', 'GET');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.

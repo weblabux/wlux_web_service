@@ -6,6 +6,11 @@ require 'account_post_changepassword.php';
 
 function _account_post($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'account', 'POST');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.

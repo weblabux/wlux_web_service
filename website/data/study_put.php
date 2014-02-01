@@ -23,13 +23,20 @@
  *  THE SOFTWARE.
  */
 /* require files for each command that supports this method */
-require 'study_put_config.php';
-require 'study_put_schedule.php';
-require 'study_put_task.php';
+require 'study_put_general.php';
+require 'study_put_measure.php';
+require 'study_put_period.php';
+require 'study_put_step.php';
 require 'study_put_variable.php';
+require 'study_put_variation.php';
 
 function _study_put($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'study', 'PUT');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}	
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.
@@ -44,22 +51,28 @@ function _study_put($link, $authInfo, $postData) {
 		$actionTaken = true;
     } 
 	*/
-	$action = 'config';
+	$action = 'general';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_put_config ($link, $authInfo, $logData, $debugState);
+		$response = _study_put_general ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'schedule';
+	$action = 'measure';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_put_schedule ($link, $authInfo, $logData, $debugState);
+		$response = _study_put_measure ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    }
+	$action = 'period';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _study_put_period ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'task';
+	$action = 'step';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_put_task ($link, $authInfo, $logData, $debugState);
+		$response = _study_put_step ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'variable';
@@ -68,6 +81,12 @@ function _study_put($link, $authInfo, $postData) {
 		$response = _study_put_variable ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
+	$action = 'variation';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _study_put_variation ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    }	
 	if (!$actionTaken) {
 		$thisFile = __FILE__;
 		require 'response_501.php';

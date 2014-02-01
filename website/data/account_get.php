@@ -5,6 +5,11 @@ require 'account_get_user.php';
 
 function _account_get($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'account', 'GET');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.

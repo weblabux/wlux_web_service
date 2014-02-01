@@ -40,7 +40,9 @@ if (!$link) {
 	$debugState = int_GetDebug($link, 'study', '');
 	$postData = '';
 	$authInfo = authorize_user ($link);
-	$response['debug']['auth'] = $authInfo;
+	if ($debugState) {
+		$response['debug']['auth'] = $authInfo;
+	}	
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		// if the data is not in the the post form, try the query string		
 		if (empty($postData)) {
