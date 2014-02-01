@@ -28,7 +28,7 @@ require 'study_put_schedule.php';
 require 'study_put_task.php';
 require 'study_put_variable.php';
 
-function _study_put($link, $postData) {
+function _study_put($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'study', 'PUT');
 	$actionTaken = false;
 	/*
@@ -47,25 +47,25 @@ function _study_put($link, $postData) {
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_put_config ($link, $logData, $debugState);
+		$response = _study_put_config ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'schedule';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_put_schedule ($link, $logData, $debugState);
+		$response = _study_put_schedule ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'task';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_put_task ($link, $logData, $debugState);
+		$response = _study_put_task ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'variable';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_put_variable ($link, $logData, $debugState);
+		$response = _study_put_variable ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {

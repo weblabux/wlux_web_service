@@ -28,7 +28,7 @@ require 'study_delete_schedule.php';
 require 'study_delete_task.php';
 require 'study_delete_variable.php';
 
-function _study_delete($link, $postData) {
+function _study_delete($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'study', 'DELETE');
 	$actionTaken = false;
 	/*
@@ -47,7 +47,7 @@ function _study_delete($link, $postData) {
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_delete_config ($link, $logData, $debugState);
+		$response = _study_delete_config ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'schedule';

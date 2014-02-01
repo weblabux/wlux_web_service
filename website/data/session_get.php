@@ -24,8 +24,9 @@
  */
 /* require files for each command that supports this method */
 require 'session_get_config.php';
+require 'session_get_currentstep.php';
 
-function _session_get($link, $postData) {
+function _session_get($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'session', 'GET');
 	$actionTaken = false;
 	/*
@@ -37,14 +38,20 @@ function _session_get($link, $postData) {
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _session_get_config ($link, $logData, $debugState);
+		$response = _session_get_config ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	*/
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _session_get_config ($link, $logData, $debugState);
+		$response = _session_get_config ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    } 
+	$action = 'currentStep';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _session_get_currentstep ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {

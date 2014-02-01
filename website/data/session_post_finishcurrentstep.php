@@ -22,7 +22,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-function _session_get_config ($link, $authInfo, $logData, $debugState) {
+function _session_post_finishcurrentstep ($link, $authInfo, $logData, $debugState) {
 require 'config_files.php';
 require 'db_utils.php';
 	// initialize the response buffer
@@ -33,8 +33,6 @@ require 'db_utils.php';
 		$response['debug']['cmdData'] = $logData;
 		$response['debug']['auth'] = $authInfo;
 	}
-	// authorization not required for this call
-	
     // not implemented
 	$errData = get_error_message ($link, 501);
 	$response['error'] = $errData;

@@ -1,7 +1,0 @@
-{"putResults":[ 
-{"error":{"status":501,"message":"Command not recognized"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\account_put.php","postData":{"bad":{"some":"stuff"}},"getData":{"bad":{"some":"stuff"}}}}, 
-{"error":{"status":501,"message":"Command not recognized"},"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_put.php","postData":{"bad":{"some":"stuff"}},"getData":{"bad":{"some":"stuff"}}}}, 
-{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\account_put_user.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}, 
-{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_put_task.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}, 
-{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_put_schedule.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}, 
-{"debug":{"module":"C:\\Users\\rbwatson\\Documents\\GitHub\\wlux_web_service\\website\\data\\study_put_variable.php","cmdData":{"some":"stuff"}},"error":{"status":501,"message":"Command not implemented"}}]} 

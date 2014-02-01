@@ -28,7 +28,7 @@ require 'study_post_schedule.php';
 require 'study_post_task.php';
 require 'study_post_variable.php';
 
-function _study_post($link, $postData) {
+function _study_post($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'study', 'POST');
 	$actionTaken = false;
 	/*
@@ -47,31 +47,31 @@ function _study_post($link, $postData) {
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_post_config ($link, $logData, $debugState);
+		$response = _study_post_config ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_post_config ($link, $logData, $debugState);
+		$response = _study_post_config ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'schedule';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_post_schedule ($link, $logData, $debugState);
+		$response = _study_post_schedule ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'task';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_post_task ($link, $logData, $debugState);
+		$response = _study_post_task ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'variable';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_post_variable ($link, $logData, $debugState);
+		$response = _study_post_variable ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {

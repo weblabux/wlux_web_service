@@ -25,14 +25,16 @@
 /* require files for each command that supports this method */
 require 'study_get_allstudyids.php';
 require 'study_get_config.php';
+require 'study_get_general.php';
 require 'study_get_name.php';
-require 'study_get_schedule.php';
-require 'study_get_studyelements.php';
-require 'study_get_task.php';
+require 'study_get_measure.php';
+require 'study_get_period.php';
+require 'study_get_step.php';
 require 'study_get_variable.php';
+require 'study_get_variation.php';
 
 
-function _study_get($link, $postData) {
+function _study_get($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'study', 'GET');
 	$actionTaken = false;
 	/*
@@ -51,43 +53,55 @@ function _study_get($link, $postData) {
 	$action = 'allStudyIds';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_get_allStudyIds ($link, $logData, $debugState);
+		$response = _study_get_allstudyids ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'config';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_get_config ($link, $logData, $debugState);
+		$response = _study_get_config ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    } 
+	$action = 'general';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _study_get_general ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    } 
+	$action = 'measure';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _study_get_measure ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'name';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_get_name ($link, $logData, $debugState);
+		$response = _study_get_name ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'schedule';
+	$action = 'period';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_get_schedule($link, $logData, $debugState);
+		$response = _study_get_period($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'studyElements';
+	$action = 'step';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_get_studyElements ($link, $logData, $debugState);
-		$actionTaken = true;
-    } 
-	$action = 'task';
-	if (!$actionTaken && (!empty($postData[$action]))) {
-		$logData = $postData[$action];
-		$response = _study_get_task ($link, $logData, $debugState);
+		$response = _study_get_step  ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'variable';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_get_variable ($link, $logData, $debugState);
+		$response = _study_get_variable ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    } 
+	$action = 'variation';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _study_get_variation ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {

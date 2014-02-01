@@ -24,6 +24,7 @@
  */
 require 'config_files.php';
 require 'int_debug.php';
+require 'int_auth.php';
 require 'int_get_message.php';
 require 'session_get.php';
 require 'session_post.php';
@@ -35,12 +36,15 @@ if (!$link) {
 	require 'response_500_db_open_error.php';
 } else {
 	$debugState = int_GetDebug($link, 'gratuity', '');
+	$postData = '';
+	$authInfo = authorize_user ($link);
+	$response['debug']['auth'] = $authInfo;
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		// if the data is not in the the post form, try the query string		
 		if (empty($postData)) {
 			$postData = $_GET;
 		} 		
-		$response = _session_get($link, $postData);
+		$response = _session_get($link, $authInfo, $postData);
 	} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// get the request data
 		if (!empty($HTTP_RAW_POST_DATA)) {
@@ -53,7 +57,7 @@ if (!$link) {
 		if (empty($postData)) {
 			$postData = $_GET;
 		} 
-		$response = _session_post($link, $postData);
+		$response = _session_post($link, $authInfo, $postData);
 	} else {
 		// method not supported
 		$errData = get_error_message ($link, 405);
