@@ -22,45 +22,29 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-require 'config_files.php';
-require 'int_debug.php';
-require 'int_get_message.php';
-require 'signin_post.php';
+
+/*
+*	returns 1 if they exist and match
+*	return 0 otherwise
+*
+*
+*
+*/
 
 $response = '';
 
-$link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
-if (!$link) {
-	require 'response_500_db_open_error.php';
-} else {
-	$debugState = int_GetDebug($link, 'gratuity', '');
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		// get the request data
-		if (!empty($HTTP_RAW_POST_DATA)) {
-			$postData = json_decode($HTTP_RAW_POST_DATA,true);
-		}		
-		// if the data is not in the raw post data, try the post form
-		if (empty($postData)) {
-			$postData = $_POST;
-		}
-		if (empty($postData)) {
-			$postData = $_GET;
-		} 
-		$response = _signin_post($link, $postData);
-		//sets the cookie & session
-		setcookie("_session_id", $response['data']['token'], time() + 86400);
-		$_SESSION["_session_id"] = $response['data']['token'];
-	} else {
-		// method not supported
-		$errData = get_error_message ($link, 405);
-		$response['error'] = $errData;
-		if ($debugState) {
-			$response['debug']['module'] = __FILE__;
-		}
-	}
-	mysqli_close($link);
+$session_session = $_SESSION['_session_id'];
+$session_cookie = $_COOKIE['_session_id'];
+
+if(empty($session_cookie)){}
+	response = '0'
+}else if(empty($session_session)){
+	response = '0'
+}else if($session_session == $session_cookie){
+	response = '1'
+}else{
+	response = '0'
 }
 
-require 'format_response.php';
-print ($fnResponse);
+print ($response);
 ?>
