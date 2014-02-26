@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*
  *  The MIT License (MIT)
  *  
@@ -22,25 +22,34 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-<<<<<<< HEAD
-function _study_post_variable ($link, $logData, $debugState) {
-=======
-function _study_post_variable ($link, $authInfo, $logData, $debugState) {
->>>>>>> d012c9b4dbb4f91ee0cd2f9943aade3778fed216
-require 'config_files.php';
-require 'db_utils.php';
-	// initialize the response buffer
+
+/*
+*	returns 1 if they exist and match
+*	return 0 otherwise
+*
+*
+*
+*/
+function get_session_id($user){
 	$response = '';
-	// initialize the debug values
-	if ($debugState) {
-		$response['debug']['module'] = __FILE__;
-		$response['debug']['cmdData'] = $logData;
-		$response['debug']['auth'] = $authInfo;
+	$link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
+	if (!$link) {
+		require 'response_500_db_open_error.php';
+	} else {
+		$session_session = $_SESSION['_session_id'];
+		$session_cookie = $_COOKIE['_session_id'];
+		$query = "SELECT authKey FROM user_accounts WHERE username = '$user';"//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
+		$session_db = mysqli_query($link, $query);
+		if(empty($session_cookie)){}
+			response = '0'
+		}else if(empty($session_session)){
+			response = '0'
+		}else if($session_session == $session_cookie || $session_cookie == $session_db){
+			response = '1'
+		}else{
+			response = '0'
+		}
 	}
-    // not implemented
-	$errData = get_error_message ($link, 501);
-	$response['error'] = $errData;
-	
-	return $response;
-}
+
+	return ($response);
 ?>

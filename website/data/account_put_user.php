@@ -22,7 +22,11 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
+<<<<<<< HEAD
+ function _account_put_user ($link, $logData, $debugState) {
+=======
  function _account_put_user ($link, $authInfo, $logData, $debugState) {
+>>>>>>> d012c9b4dbb4f91ee0cd2f9943aade3778fed216
 require 'config_files.php';
 require 'db_utils.php';
 	// initialize the response buffer

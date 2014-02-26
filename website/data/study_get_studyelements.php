@@ -22,11 +22,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-<<<<<<< HEAD
-function _study_post_variable ($link, $logData, $debugState) {
-=======
-function _study_post_variable ($link, $authInfo, $logData, $debugState) {
->>>>>>> d012c9b4dbb4f91ee0cd2f9943aade3778fed216
+function _study_get_studyElements ($link, $logData, $debugState) {
 require 'config_files.php';
 require 'db_utils.php';
 	// initialize the response buffer
@@ -35,7 +31,6 @@ require 'db_utils.php';
 	if ($debugState) {
 		$response['debug']['module'] = __FILE__;
 		$response['debug']['cmdData'] = $logData;
-		$response['debug']['auth'] = $authInfo;
 	}
     // not implemented
 	$errData = get_error_message ($link, 501);
