@@ -47,9 +47,14 @@ if (!$link) {
 			$postData = $_GET;
 		} 
 		$response = _signin_post($link, $postData);
+		$token = $response['data']['token'];
+		$username = $response['data']['username'];
 		//sets the cookie & session
-		setcookie("_session_id", $response['data']['token'], time() + 86400);
-		$_SESSION["_session_id"] = $response['data']['token'];
+		setcookie("_session_id", $token, time() + 86400);
+		$_SESSION["_session_id"] = $token;
+		//store the stuff
+		$query = "UPDATE user_accounts SET authKey = '$token' WHERE username = '$username'";
+		mysqli_query($link, $query);
 	} else {
 		// method not supported
 		$errData = get_error_message ($link, 405);

@@ -30,21 +30,26 @@
 *
 *
 */
+function get_session_id($user){
+	$response = '';
+	$link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
+	if (!$link) {
+		require 'response_500_db_open_error.php';
+	} else {
+		$session_session = $_SESSION['_session_id'];
+		$session_cookie = $_COOKIE['_session_id'];
+		$query = "SELECT authKey FROM user_accounts WHERE username = '$user';"//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
+		$session_db = mysqli_query($link, $query);
+		if(empty($session_cookie)){}
+			response = '0'
+		}else if(empty($session_session)){
+			response = '0'
+		}else if($session_session == $session_cookie || $session_cookie == $session_db){
+			response = '1'
+		}else{
+			response = '0'
+		}
+	}
 
-$response = '';
-
-$session_session = $_SESSION['_session_id'];
-$session_cookie = $_COOKIE['_session_id'];
-
-if(empty($session_cookie)){}
-	response = '0'
-}else if(empty($session_session)){
-	response = '0'
-}else if($session_session == $session_cookie){
-	response = '1'
-}else{
-	response = '0'
-}
-
-print ($response);
+	return ($response);
 ?>
