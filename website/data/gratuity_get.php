@@ -27,6 +27,11 @@ require 'gratuity_get_study.php';
 
 function _gratuity_get($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'gratuity', 'GET');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.

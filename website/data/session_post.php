@@ -24,10 +24,10 @@
  */
 /* require files for each command that supports this method */
 require 'session_post_start.php';
-require 'session_post_finishcurrenttask.php';
-require 'session_post_startnexttask.php';
+require 'session_post_finishcurrentstep.php';
+require 'session_post_startnextstep.php';
 
-function _session_post ($link, $postData) {
+function _session_post ($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'session', 'POST');
 	$actionTaken = false;
 	/*
@@ -46,19 +46,19 @@ function _session_post ($link, $postData) {
 	$action = 'start';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _session_post_start ($link, $logData, $debugState);
+		$response = _session_post_start ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'startNextTask';
+	$action = 'startNextStep';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _session_post_startnexttask ($link, $logData, $debugState);
+		$response = _session_post_startnextstep ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'finishCurrentTask';
+	$action = 'finishCurrentStep';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _session_post_finishcurrenttask ($link, $logData, $debugState);
+		$response = _session_post_finishcurrentstep ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {

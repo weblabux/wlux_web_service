@@ -22,7 +22,11 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
+<<<<<<< HEAD
 function _session_get_config ($link, $logData, $debugState) {
+=======
+function _session_get_config ($link, $authInfo, $logData, $debugState) {
+>>>>>>> d012c9b4dbb4f91ee0cd2f9943aade3778fed216
 require 'config_files.php';
 require 'db_utils.php';
 	// initialize the response buffer
@@ -31,7 +35,10 @@ require 'db_utils.php';
 	if ($debugState) {
 		$response['debug']['module'] = __FILE__;
 		$response['debug']['cmdData'] = $logData;
+		$response['debug']['auth'] = $authInfo;
 	}
+	// authorization not required for this call
+	
     // not implemented
 	$errData = get_error_message ($link, 501);
 	$response['error'] = $errData;

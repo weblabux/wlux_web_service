@@ -27,6 +27,11 @@ require 'gratuity_post_gratuity.php';
 
 function _gratuity_post($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'gratuity', 'POST');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.

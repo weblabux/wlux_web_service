@@ -2,9 +2,15 @@
 
 /* require files for each command that supports this method */
 require 'account_post_user.php';
+require 'account_post_changepassword.php';
 
-function _account_post($link, $postData) {
+function _account_post($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'account', 'POST');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.
@@ -22,7 +28,13 @@ function _account_post($link, $postData) {
 	$action = 'user';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _account_post_user ($link, $logData, $debugState);
+		$response = _account_post_user ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    }
+	$action = 'changePassword';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _account_post_changepassword ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     }
 	if (!$actionTaken) {

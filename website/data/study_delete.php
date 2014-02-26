@@ -23,13 +23,20 @@
  *  THE SOFTWARE.
  */
 /* require files for each command that supports this method */
-require 'study_delete_config.php';
-require 'study_delete_schedule.php';
-require 'study_delete_task.php';
+require 'study_delete_general.php';
+require 'study_delete_measure.php';
+require 'study_delete_period.php';
+require 'study_delete_step.php';
 require 'study_delete_variable.php';
+require 'study_delete_variation.php';
 
-function _study_delete($link, $postData) {
+function _study_delete($link, $authInfo, $postData) {
 	$debugState = int_GetDebug($link, 'study', 'DELETE');
+	if ($debugState) {
+		$response['debug']['module'] = __FILE__;
+		$response['debug']['postData'] = $postData;
+		$response['debug']['auth'] = $authInfo;
+	}	
 	$actionTaken = false;
 	/*
 	* Repeat for each command that supports this method.
@@ -44,28 +51,40 @@ function _study_delete($link, $postData) {
 		$actionTaken = true;
     } 
 	*/
-	$action = 'config';
+	$action = 'general';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_delete_config ($link, $logData, $debugState);
+		$response = _study_delete_general ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'schedule';
+	$action = 'measure';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_delete_schedule ($link, $logData, $debugState);
+		$response = _study_delete_measure ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
-	$action = 'task';
+	$action = 'period';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_delete_task ($link, $logData, $debugState);
+		$response = _study_delete_period ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    } 
+	$action = 'step';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _study_delete_step ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	$action = 'variable';
 	if (!$actionTaken && (!empty($postData[$action]))) {
 		$logData = $postData[$action];
-		$response = _study_delete_variable ($link, $logData, $debugState);
+		$response = _study_delete_variable ($link, $authInfo, $logData, $debugState);
+		$actionTaken = true;
+    } 
+	$action = 'variation';
+	if (!$actionTaken && (!empty($postData[$action]))) {
+		$logData = $postData[$action];
+		$response = _study_delete_variation ($link, $authInfo, $logData, $debugState);
 		$actionTaken = true;
     } 
 	if (!$actionTaken) {
