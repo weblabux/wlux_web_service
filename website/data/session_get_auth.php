@@ -38,7 +38,7 @@ function get_session_id($user){
 	} else {
 		$session_session = $_SESSION['_session_id'];
 		$session_cookie = $_COOKIE['_session_id'];
-		$query = "SELECT authKey FROM user_accounts WHERE username = '$user';"//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
+		$query = "SELECT auth FROM accounts WHERE username = '$user';"//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
 		$session_db = mysqli_query($link, $query);
 		if(empty($session_cookie)){}
 			response = '0'

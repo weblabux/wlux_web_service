@@ -53,7 +53,8 @@ if (!$link) {
 		setcookie("_session_id", $token, time() + 86400);
 		$_SESSION["_session_id"] = $token;
 		//store the stuff
-		$query = "UPDATE user_accounts SET authKey = '$token' WHERE username = '$username'";
+		//REQUIRES: column name is auth
+		$query = "UPDATE accounts SET auth = '$token' WHERE username = '$username'";
 		mysqli_query($link, $query);
 	} else {
 		// method not supported
