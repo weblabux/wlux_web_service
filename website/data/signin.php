@@ -46,7 +46,8 @@ if (!$link) {
 		if (empty($postData)) {
 			$postData = $_GET;
 		} 
-		$response = _signin_post($link, $postData);
+		//TODO undo
+		//$response = _signin_post($link, $postData);
 		$token = $response['data']['token'];
 		$username = $response['data']['username'];
 		//sets the cookie & session ??1 day??

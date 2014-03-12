@@ -1,4 +1,5 @@
 <?php 
+<<<<<<< HEAD
 /*
  *  The MIT License (MIT)
  *  
@@ -30,6 +31,8 @@ require 'config_files.php';
 *
 *
 */
+=======
+>>>>>>> c4489420dcb71dfdfdb3c137bd615d8f9a74e26a
 function get_session_auth($user){
 	$response = '';
 	$link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
@@ -38,6 +41,7 @@ function get_session_auth($user){
 	} else {
 		$session_session = $_SESSION['_session_id'];
 		$session_cookie = $_COOKIE['_session_id'];
+<<<<<<< HEAD
 		$query = "SELECT auth FROM accounts WHERE username ='$user'";//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
 		$result = mysqli_query($link, $query);
 		$free = mysqli_fetch_assoc($result);
@@ -47,6 +51,12 @@ function get_session_auth($user){
 	echo "db: $free[auth]</br>";
 		if($session_session == $session_cookie || $session_cookie == $free['auth']){
 			$response = '1';
+=======
+		$query = "SELECT auth FROM accounts WHERE username=brandon";//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
+		$session_db = mysqli_query($link, $query);
+		if($session_session == $session_cookie || $session_cookie == $session_db){
+			response = '1'
+>>>>>>> c4489420dcb71dfdfdb3c137bd615d8f9a74e26a
 		}else{
 			$response = '0';
 		}
