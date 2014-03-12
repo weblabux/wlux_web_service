@@ -49,12 +49,13 @@ if (!$link) {
 		$response = _signin_post($link, $postData);
 		$token = $response['data']['token'];
 		$username = $response['data']['username'];
-		//sets the cookie & session
+		//sets the cookie & session ??1 day??
 		setcookie("_session_id", $token, time() + 86400);
 		$_SESSION["_session_id"] = $token;
 		//store the stuff
 		//REQUIRES: column name is auth
-		$query = "UPDATE accounts SET auth = '$token' WHERE username = '$username'";
+		$query = "UPDATE accounts SET auth='$token' WHERE username='$username'";
+		echo $query;
 		mysqli_query($link, $query);
 	} else {
 		// method not supported

@@ -51,7 +51,7 @@
     define('DB_TABLE_STUDY_VARIABLES', 'study_variables', false);
     define('DB_TABLE_STUDY_STEP_DETAILS', 'study_step_details', false);
 
-    define('DB_TABLE_USER_ACCOUNTS', 'user_accounts', false);
+    define('DB_TABLE_USER_ACCOUNTS', 'accounts', false);
 }
 /*	
 	$DB_TABLE_OPEN_LOG = 'log_open';

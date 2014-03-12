@@ -22,7 +22,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
-
+require 'config_files.php';
 /*
 *	returns 1 if they exist and match
 *	return 0 otherwise
@@ -30,7 +30,7 @@
 *
 *
 */
-function get_session_id($user){
+function get_session_auth($user){
 	$response = '';
 	$link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
 	if (!$link) {
@@ -38,14 +38,19 @@ function get_session_id($user){
 	} else {
 		$session_session = $_SESSION['_session_id'];
 		$session_cookie = $_COOKIE['_session_id'];
-		$query = "SELECT auth FROM accounts WHERE username = '$user';"//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
-		$session_db = mysqli_query($link, $query);
-		if($session_session == $session_cookie || $session_cookie == $session_db){
-			response = '1'
-		}else{
-			response = '0'
-		}
+		$query = "SELECT auth FROM accounts WHERE username ='$user'";//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
+		$result = mysqli_query($link, $query);
+		$free = mysqli_fetch_assoc($result);
 	}
+	echo "session: $session_session</br>";
+	echo "cookie: $session_cookie</br>";
+	echo "db: $free[auth]</br>";
+		if($session_session == $session_cookie || $session_cookie == $free['auth']){
+			$response = '1';
+		}else{
+			$response = '0';
+		}
 
 	return ($response);
+}
 ?>
