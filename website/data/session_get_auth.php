@@ -32,30 +32,34 @@ require 'config_files.php';
 */
 
 function get_session_auth($user){
-	$response = '';
+	$response = '0';
 	$link = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE_NAME);
 	if (!$link) {
-		require 'response_500_db_open_error.php';
+		//require 'response_500_db_open_error.php';
 	} else {
-		$session_session = $_SESSION['_session_id'];
-		$session_cookie = $_COOKIE['_session_id'];
+		if (isset($_SESSION['PHPSESSID'])) {  
+			$session_session = $_SESSION['PHPSESSID'];
+		}else{
+			$session_session = "-1";
+		}
+		$session_cookie = $_COOKIE['PHPSESSID'];
 		$query = "SELECT auth FROM accounts WHERE username ='$user'";//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
 		$result = mysqli_query($link, $query);
 		$free = mysqli_fetch_assoc($result);
-	}
-	echo "session: $session_session</br>";
-	echo "cookie: $session_cookie</br>";
-	echo "db: $free[auth]</br>";
+	
+		/* remove this after debug */
+		echo "session: $session_session</br>";
+		echo "cookie: $session_cookie</br>";
+		echo "db: $free[auth]</br>";
+		/* remove this after debug */
+
+		//
 		if($session_session == $session_cookie || $session_cookie == $free['auth']){
-			$response = '1';
-			$query = "SELECT auth FROM accounts WHERE username=brandon";//"GET user_accounts SET authKey = '$token' WHERE username = '$username'";
-			$session_db = mysqli_query($link, $query);
-		if($session_session == $session_cookie || $session_cookie == $session_db){
 			$response = '1';
 		}else{
 			$response = '0';
 		}
-
+	}
 	return ($response);
 }
 ?>

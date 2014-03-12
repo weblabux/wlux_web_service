@@ -51,8 +51,8 @@ if (!$link) {
 		$token = $response['data']['token'];
 		$username = $response['data']['username'];
 		//sets the cookie & session ??1 day??
-		setcookie("_session_id", $token, time() + 86400);
-		$_SESSION["_session_id"] = $token;
+		setcookie("PHPSESSID", $token, time() + 86400);
+		$_SESSION["PHPSESSID"] = $token;
 		//store the stuff
 		//REQUIRES: column name is auth
 		$query = "UPDATE accounts SET auth='$token' WHERE username='$username'";
