@@ -46,7 +46,18 @@ if (!$link) {
 		if (empty($postData)) {
 			$postData = $_GET;
 		} 
-		$response = _signin_post($link, $postData);
+		//TODO undo
+		//$response = _signin_post($link, $postData);
+		$token = $response['data']['token'];
+		$username = $response['data']['username'];
+		//sets the cookie & session ??1 day??
+		setcookie("PHPSESSID", $token, time() + 86400);
+		$_SESSION["PHPSESSID"] = $token;
+		//store the stuff
+		//REQUIRES: column name is auth
+		$query = "UPDATE accounts SET auth='$token' WHERE username='$username'";
+		echo $query;
+		mysqli_query($link, $query);
 	} else {
 		// method not supported
 		$errData = get_error_message ($link, 405);
