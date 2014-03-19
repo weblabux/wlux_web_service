@@ -30,6 +30,13 @@ require 'config_files.php';
 *
 *
 */
+/*
+	TODO: refactor function and file name to look like internal functions
+	TODO: refactor DEBUG  calls to [debug] elements of $response
+	TODO: wrap [debug] values in an if ($debug) statement using the 
+	      values read in session_get.php
+	TODO: refactor response to 
+*/
 
 function get_session_auth($user){
 	$response = '0';
@@ -52,6 +59,8 @@ function get_session_auth($user){
 		echo "cookie: $session_cookie</br>";
 		echo "db: $free[auth]</br>";
 		/* remove this after debug */
+		
+		
 
 		//
 		if($session_session == $session_cookie || $session_cookie == $free['auth']){
