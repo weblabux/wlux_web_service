@@ -41,6 +41,10 @@ require 'config_files.php';
 		$actionTaken = true;
     } 
 	*/
+	/* 
+	    TODO: Refactor these variables to an array that will work with 
+	          the format_object_for_SQL_insert function in db_utils.php
+	*/
 	$username = '';
 	$password = '';
 	$lastname = '';
@@ -67,6 +71,10 @@ require 'config_files.php';
 		$thisFile = __FILE__;
 		require 'response_501.php';
 	}
+	/*
+		TODO: refactor this code to use format_object_for_SQL_insert 
+		      from db_utils.php
+	*/
 	/* insert into user_accounts (username, acctPassword, firstName, lastName, email) values ("kim", "1Password", "kimyen", "truong", "kimyen@uw.edu");*/
 	if (!empty($username) && !empty($password) && !empty($firstname) && !empty($lastname) && !empty($email)) {
 		$queryString = 'INSERT INTO '.DB_TABLE_USER_ACCOUNTS .'(username, acctPassword, firstName, lastName, email) VALUES ("'.$username.'", "'.$password.'", "'.$firstname.'", "'.$lastname.'", "'.$email.'")';
